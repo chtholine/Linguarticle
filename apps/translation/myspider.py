@@ -34,7 +34,7 @@ def map_text(text, tag):
                     "Text": word,
                     "Tag": tag,
                     "Format": Format.WORD
-                    if word.isalnum()
+                    if re.search(r"\w|[-']", word)
                     else Format.SIGN,
                 }
             )
