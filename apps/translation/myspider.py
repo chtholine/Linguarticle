@@ -3,7 +3,7 @@ from typing import NamedTuple
 
 import scrapy
 
-# scrapy runspider myspider article.json
+# scrapy runspider myspider.py -O article.json
 
 class Style(NamedTuple):
     P = "P"
@@ -34,7 +34,7 @@ def map_text(text, tag):
                     "Text": word,
                     "Tag": tag,
                     "Format": Format.WORD
-                    if re.search(r"\w|[-']", word)
+                    if re.search(r"\w(?:\W+\w+)*|\w+", word)
                     else Format.SIGN,
                 }
             )
