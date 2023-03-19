@@ -1,0 +1,10 @@
+beautifulsoup4==4.11.2
+black==23.1.0
+Django==4.1.7
+djangorestframework==3.14.0
+drf-yasg==1.21.5
+newspaper3k==0.2.8
+Pillow==9.4.0
+pip==23.0.1
+scrapy==2.8.0
+
