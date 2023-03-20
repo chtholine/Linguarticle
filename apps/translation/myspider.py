@@ -3,7 +3,9 @@ from typing import NamedTuple
 
 import scrapy
 
+
 # scrapy runspider myspider.py -O article.json
+
 
 class Style(NamedTuple):
     P = "P"
@@ -24,29 +26,24 @@ class Format(NamedTuple):
 
 def map_text(text, tag):
     words = re.findall(r"(?:\w+(?:[^\w\s]+\w+)*)|\w+|\s|[^\w\s]+", text, re.UNICODE)
-    data = []
-    for word in words:
-        if word.isspace():
-            data.append({"Text": word, "Tag": tag, "Format": Format.SPACE})
-        else:
-            data.append(
-                {
-                    "Text": word,
-                    "Tag": tag,
-                    "Format": Format.WORD
-                    if re.search(r"\w(?:\W+\w+)*|\w+", word)
-                    else Format.SIGN,
-                }
-            )
-    return data
+    return [
+        {"Text": word, "Tag": tag, "Format": Format.SPACE}
+        if word.isspace()
+        else {
+            "Text": word,
+            "Tag": tag,
+            "Format": Format.WORD
+            if re.search(r"\w(?:\W+\w+)*|\w+", word)
+            else Format.SIGN,
+        }
+        for word in words
+    ]
 
 
 class ArticleSpider(scrapy.Spider):
     name = "article"
     allowed_domains = ["*"]
-    start_urls = [
-        "https://medium.com/@schopade333/django-best-practices-a95f9b2b11e8"
-    ]
+    start_urls = ["https://medium.com/@schopade333/django-best-practices-a95f9b2b11e8"]
 
     def parse(self, response, **kwargs):
         title = response.xpath("//h1/text() | //h1/strong/text()").get().strip()
@@ -60,4 +57,9 @@ class ArticleSpider(scrapy.Spider):
                 tag = element.xpath("name()").get().upper()
                 tag = tag if tag in Style.__dict__.values() else Style.P
                 data.extend(map_text(text, tag))
-        yield {"title": title_data, "author": author_data, "data": data, "url": response.url}
+        yield {
+            "title": title_data,
+            "author": author_data,
+            "data": data,
+            "url": response.url,
+        }
