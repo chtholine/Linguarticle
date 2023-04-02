@@ -1,2 +1,4 @@
 /venv/
 /apps/translation/article.json
+/apps/translation/spider.py
+/apps/translation/Article.json
