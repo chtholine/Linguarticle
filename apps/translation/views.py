@@ -13,16 +13,18 @@ from .serializers import ArticleSerializer
 # ---Scrapy---
 class ScrapingView(APIView):
     def get(self, request):
-        process = CrawlerProcess(settings={
-            'USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-            'FEED_FORMAT': 'json',
-            'FEED_URI': 'output.json',
-        })
+        process = CrawlerProcess(
+            settings={
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+                "FEED_FORMAT": "json",
+                "FEED_URI": "output.json",
+            }
+        )
 
         process.crawl(ArticleSpider)
         process.start()
 
-        with open('output.json', 'r') as f:
+        with open("output.json", "r") as f:
             data = f.read()
 
         return Response(data)
@@ -39,12 +41,12 @@ class SignUpAPIView(APIView):
             if user is not None:
                 refresh = RefreshToken.for_user(user)
                 response_data = {
-                    'status': 'success',
-                    'message': 'User created successfully.',
-                    'data': {
-                        'refresh': str(refresh),
-                        'access': str(refresh.access_token),
-                    }
+                    "status": "success",
+                    "message": "User created successfully.",
+                    "data": {
+                        "refresh": str(refresh),
+                        "access": str(refresh.access_token),
+                    },
                 }
                 return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -54,22 +56,22 @@ class LoginAPIView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
+        username = request.data.get("username")
+        password = request.data.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             refresh = RefreshToken.for_user(user)
             response_data = {
-                'status': 'success',
-                'message': 'Login successful.',
-                'data': {
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
-                }
+                "status": "success",
+                "message": "Login successful.",
+                "data": {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
+                },
             }
             return Response(response_data, status=status.HTTP_200_OK)
-        return Response({'error': 'Invalid username or password.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Invalid username or password."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogoutAPIView(APIView):
@@ -77,7 +79,7 @@ class LogoutAPIView(APIView):
 
     def post(self, request):
         logout(request)
-        return Response({'message': 'Logout successful.'}, status=status.HTTP_200_OK)
+        return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
 
 
 # --Settings-- #
@@ -89,7 +91,7 @@ class UpdateUsernameAPIView(APIView):
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': 'Username updated successfully.'}, status=status.HTTP_200_OK)
+            return Response({"message": "Username updated successfully."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -101,7 +103,7 @@ class UpdateEmailAPIView(APIView):
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': 'Email updated successfully.'}, status=status.HTTP_200_OK)
+            return Response({"message": "Email updated successfully."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -110,13 +112,13 @@ class UpdatePasswordAPIView(APIView):
 
     def put(self, request):
         user = request.user
-        old_password = request.data.get('old_password')
-        new_password = request.data.get('new_password')
+        old_password = request.data.get("old_password")
+        new_password = request.data.get("new_password")
         if user.check_password(old_password):
             user.set_password(new_password)
             user.save()
-            return Response({'message': 'Password updated successfully.'}, status=status.HTTP_200_OK)
-        return Response({'error': 'Invalid old password.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Password updated successfully."}, status=status.HTTP_200_OK)
+        return Response({"error": "Invalid old password."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # -- Articles -- #
