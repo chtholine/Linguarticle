@@ -32,9 +32,7 @@ def map_text(text, tag):
         else {
             "Text": word,
             "Tag": tag,
-            "Format": Format.WORD
-            if re.search(r"\w(?:\W+\w+)*|\w+", word)
-            else Format.SIGN,
+            "Format": Format.WORD if re.search(r"\w(?:\W+\w+)*|\w+", word) else Format.SIGN,
         }
         for word in words
     ]
