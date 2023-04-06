@@ -21,11 +21,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ("username", "email", "password")
         extra_kwargs = {
-            'password': {'write_only': True},
-            'email': {'required': True},
-            'username': {'required': True},
+            "password": {"write_only": True},
+            "email": {"required": True},
+            "username": {"required": True},
         }
 
     def create(self, validated_data):
@@ -33,9 +33,9 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        instance.username = validated_data.get('username', instance.username)
-        instance.email = validated_data.get('email', instance.email)
-        password = validated_data.get('password')
+        instance.username = validated_data.get("username", instance.username)
+        instance.email = validated_data.get("email", instance.email)
+        password = validated_data.get("password")
         if password:
             instance.set_password(password)
         instance.save()
