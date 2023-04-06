@@ -1,0 +1,10 @@
+# Ignore all
+**
+
+# Exclude
+!docker/app
+!apps
+!core
+!Makefile
+!manage.py
+!requirements.txt
