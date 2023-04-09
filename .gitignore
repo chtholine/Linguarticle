@@ -4,3 +4,5 @@
 /apps/translation/Article.json
 db.sqlite3
 .env
+/scraper/items.json
+/scraper/twistd.pid
