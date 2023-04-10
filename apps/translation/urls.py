@@ -16,4 +16,5 @@ urlpatterns = [
     path("articles/<int:id>/", ShowArticleView.as_view(), name="show-article"),
     path("articles/<int:id>/update/", UpdateArticleView.as_view(), name="update-article"),
     path("articles/<int:id>/delete/", DeleteArticleView.as_view(), name="delete-article"),
+    path("crawl/", crawl, name="crawl"),
 ]
