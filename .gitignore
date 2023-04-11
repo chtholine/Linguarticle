@@ -10,3 +10,4 @@ db.sqlite3
 /scraper/logs/
 /scraper/dbs/
 *.pyc
+**/__pycache__/
