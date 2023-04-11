@@ -1,4 +1,4 @@
-beautifulsoup4==4.12.1
+beautifulsoup4==4.12.2
 black==23.3.0
 Django==4.2.0
 djangorestframework==3.14.0
