@@ -9,4 +9,3 @@ from apps.translation.models import Article
 
 class ArticleItem(DjangoItem):
     django_model = Article
-    fields = ["title", "author", "data", "url"]
