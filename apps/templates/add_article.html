@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit URL</title>
+</head>
+<body>
+  <h1>Submit URL for Scraping</h1>
+  <form action="{% url 'start_crawl' %}" method="post">
+    {% csrf_token %}
+      <label>
+          <input type="url" name="url" placeholder="Enter article URL" required>
+      </label>
+      <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
