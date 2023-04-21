@@ -5,8 +5,12 @@ from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 from apps.translation.models import Article
 
-
-class ScraperPipeline(object):
+class ScraperPipeline:
     def process_item(self, item, spider):
-        item.save()
+        article = Article()
+        article.url = item['url']
+        article.title = item['title']
+        article.author = item['author']
+        article.data = item['data']
+        article.save()
         return item
