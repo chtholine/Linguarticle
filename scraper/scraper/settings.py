@@ -1,12 +1,9 @@
 import sys
 import os
 import django
-from django.conf import settings
 
 sys.path.append("/home/chtholine/PycharmProjects/django_translation")
-
 os.environ["DJANGO_SETTINGS_MODULE"] = "core.settings"
-
 django.setup()
 
 # Scrapy settings for scraper project
@@ -23,14 +20,6 @@ BOT_NAME = "scraper_bot"
 SPIDER_MODULES = ["scraper.spiders"]
 NEWSPIDER_MODULE = "scraper.spiders"
 
-DATABASE = {
-    "drivername": "sqlite",
-    "database": os.path.join(settings.BASE_DIR, "db.sqlite3"),
-    "username": "",
-    "password": "",
-    "host": "",
-    "port": "",
-}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = "scraper (+http://www.yourdomain.com)"

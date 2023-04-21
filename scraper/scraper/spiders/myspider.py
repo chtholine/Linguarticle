@@ -9,7 +9,7 @@ import scrapy
 from ..items import ArticleItem
 
 
-# scrapy runspider myspider.py -O article.json
+# scrapy crawl article_spider -O article.json -a url=
 
 
 class Style(NamedTuple):
@@ -59,9 +59,6 @@ class ArticleSpider(scrapy.Spider):
         ]
         super(ArticleSpider, self).__init__(*args, **kwargs)
 
-    # allowed_domains = ["*"]
-    # start_urls = ["https://medium.com/@schopade333/django-best-practices-a95f9b2b11e8"]
-
     def parse(self, response, **kwargs):
         sleep(5)
         item = ArticleItem()
@@ -85,3 +82,5 @@ class ArticleSpider(scrapy.Spider):
         item["data"] = data
 
         yield item
+
+
