@@ -17,7 +17,7 @@ from .serializers import ArticleSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from rest_framework.response import Response
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 def url_valid(url):
@@ -186,8 +186,9 @@ class AddArticleView(APIView):
         try:
             subprocess.run(
                 command.split(), check=True, cwd="/home/chtholine/PycharmProjects/django_translation/scraper"
-            )
-            return Response({"message": f"{spider_name} spider started for URL: {canonical_url}"})
+            )  # the response will not be returned until this method finishes scraping process
+            return Response({"message": f"{spider_name} spider has parsed: {canonical_url}"})
+            # return redirect("articles")  # you can get articles json after parsing
         except subprocess.CalledProcessError as e:
             return Response({"error": str(e)}, status=500)
 
