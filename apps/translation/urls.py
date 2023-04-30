@@ -16,7 +16,11 @@ urlpatterns = [
     path("articles/<int:id>/", ShowArticleView.as_view(), name="show-article"),
     path("articles/<int:id>/update/", UpdateArticleView.as_view(), name="update-article"),
     path("articles/<int:id>/delete/", DeleteArticleView.as_view(), name="delete-article"),
-
-    path("crawl/", StartCrawlView.as_view(), name="start_crawl"),
+    # Dictionary
+    path("dictionary/", DictionaryView.as_view(), name="dictionary"),
+    path("dictionary/add/", AddWordView.as_view(), name="add-word"),
+    path("dictionary/<int:id>/", ShowWordView.as_view(), name="show-word"),
+    path("dictionary/<int:id>/delete/", DeleteWordView.as_view(), name="show-word"),
+    # Non-API
     path("add_article/", submit_url, name="add_article"),
 ]
