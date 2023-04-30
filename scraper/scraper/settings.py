@@ -6,6 +6,8 @@ sys.path.append("/home/chtholine/PycharmProjects/django_translation")
 os.environ["DJANGO_SETTINGS_MODULE"] = "core.settings"
 django.setup()
 
+from core.settings import BASE_DIR
+
 # Scrapy settings for scraper project
 #
 # For simplicity, this file contains only settings considered important or
@@ -25,7 +27,7 @@ NEWSPIDER_MODULE = "scraper.spiders"
 # USER_AGENT = "scraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
@@ -68,6 +70,13 @@ ROBOTSTXT_OBEY = True
 #    "scrapy.extensions.telnet.TelnetConsole": None,
 # }
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
@@ -99,4 +108,3 @@ ITEM_PIPELINES = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = None
 FEED_EXPORT_ENCODING = "utf-8"
-SCRAPYD_URL = "http://127.0.0.1:6800"
