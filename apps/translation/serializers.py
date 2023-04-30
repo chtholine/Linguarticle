@@ -11,17 +11,21 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class DictionarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dictionary
+        fields = ["word", "translation"]
+
+
 class UserSerializer(serializers.ModelSerializer):
     errors = serializers.SerializerMethodField()
 
     def get_errors(self, obj):
-        if self.errors:
-            return self.errors
-        return {}
+        return self.errors if self.errors else {}
 
     class Meta:
         model = User
-        fields = ("username", "email", "password")
+        fields = ("username", "email", "password", "errors")
         extra_kwargs = {
             "password": {"write_only": True},
             "email": {"required": True},
@@ -29,14 +33,12 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        return user
+        return User.objects.create_user(**validated_data)
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get("username", instance.username)
         instance.email = validated_data.get("email", instance.email)
-        password = validated_data.get("password")
-        if password:
+        if password := validated_data.get("password"):
             instance.set_password(password)
         instance.save()
         return instance
