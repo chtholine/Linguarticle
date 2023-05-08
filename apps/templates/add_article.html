@@ -1,18 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Submit URL</title>
+    <title>Article Visualization</title>
+    <title>Article Translation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.5.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        .word {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-  <h1>Submit URL for Scraping</h1>
-  <form action="{% url 'start_crawl' %}" method="post">
-    {% csrf_token %}
-      <label>
-          <input type="url" name="url" placeholder="Enter article URL" required>
-      </label>
-      <button type="submit">Submit</button>
-  </form>
+{% for word in words %}
+    <span class="word">{{ word }}</span>
+{% endfor %}
+
+<script>
+    $(document).ready(function () {
+        $('.word').on('click', function () {
+            var word = $(this).text();
+            $.ajax({
+                url: '{% url "translate" %}',
+                type: 'GET',
+                data: {'word': word},
+                success: function (data) {
+                    showDialog(data.translation);  // Display translation in a dialog window
+                },
+                error: function () {
+                    // Handle error case
+                }
+            });
+        });
+    });
+
+    function showDialog(translation) {
+        $('<div></div>').appendTo('body')
+            .html('<p>' + translation + '</p>')
+            .dialog({
+                title: 'Translation',
+                modal: true,
+                width: 400,
+                buttons: {
+                    'Add to Dictionary': function () {
+                        addToDictionary(translation);
+                        $(this).dialog('close');
+                    },
+                    'Close': function () {
+                        $(this).dialog('close');
+                    }
+                },
+                close: function (event, ui) {
+                    $(this).remove();
+                }
+            });
+    }
+
+    function addToDictionary(word) {
+        $.ajax({
+            url: 'api/v1/add_word/',
+            type: 'POST',
+            data: {'word': word},
+            success: function (data) {
+                alert('Word added to dictionary!');
+            },
+            error: function () {
+                alert('Failed to add word to dictionary. Please try again later.');
+            }
+        });
+    }
+</script>
 </body>
 </html>
