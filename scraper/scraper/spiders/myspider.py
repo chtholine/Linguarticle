@@ -65,18 +65,19 @@ class ArticleSpider(scrapy.Spider):
         title_data = map_text(title, Style.H1)
         author = response.xpath("//a/span/text() | //h2/span/text()").get().strip()
         author_data = map_text(author, Style.H2)
-        data = []
-        for element in response.xpath("//section/descendant::*[not(self::style)]"):
-            text = element.xpath("text()").get()
-            if text is not None and text.strip() not in (title, author):
-                tag = element.xpath("name()").get().upper()
-                tag = tag if tag in Style.__dict__.values() else Style.P
-                data.extend(map_text(text, tag))
+        data = response.xpath("//section/descendant::*[not(self::style)]//text()").getall()
+        content = ' '.join([text.strip() for text in data if text.strip() not in (title, author)])
+        # for element in response.xpath("//section/descendant::*[not(self::style)]"):
+        #     text = element.xpath("text()").get()
+        #     if text is not None and text.strip() not in (title, author):
+        #         tag = element.xpath("name()").get().upper()
+        #         tag = tag if tag in Style.__dict__.values() else Style.P
+        #         data.extend(map_text(text, tag))
 
         item["url"] = self.url
         item["title"] = title
         item["author"] = author
-        item["data"] = data
+        item["data"] = content
         item.instance.user_id = user_id
 
         yield item
