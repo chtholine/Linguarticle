@@ -21,6 +21,7 @@ class Article(models.Model):
     author = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     data = models.TextField()
+    translation = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
