@@ -25,9 +25,12 @@
         $('.word').on('click', function () {
             var word = $(this).text();
             $.ajax({
-                url: '{% url "translate" %}',
-                type: 'GET',
+                url: '{% url "translate-word" %}',
+                type: 'POST',
                 data: {'word': word},
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'  // Add the CSRF token to headers
+                },
                 success: function (data) {
                     showDialog(data.translation);  // Display translation in a dialog window
                 },
@@ -65,6 +68,9 @@
             url: 'api/v1/add_word/',
             type: 'POST',
             data: {'word': word},
+            headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'  // Add the CSRF token to headers
+                },
             success: function (data) {
                 alert('Word added to dictionary!');
             },
