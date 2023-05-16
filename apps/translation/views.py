@@ -2,14 +2,15 @@ import os
 import nltk
 from deep_translator import GoogleTranslator
 import subprocess
+from django.views import View
 from drf_yasg import openapi
 import requests
 from bs4 import BeautifulSoup
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from nltk import word_tokenize
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, login, logout
-from .serializers import UserSerializer, DictionarySerializer
+from .serializers import UserSerializer, DictionarySerializer, ArticleUpdateSerializer
 from rest_framework.views import APIView
 from rest_framework import status, permissions
 from .models import Article, Dictionary
@@ -17,7 +18,7 @@ from .serializers import ArticleSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from rest_framework.response import Response
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 def url_valid(url):
@@ -29,8 +30,14 @@ def url_valid(url):
     return True
 
 
-def submit_url(request):
-    return render(request, "add_article.html")
+class ArticleView(View):
+    template_name = "home.html"
+
+    def get(self, request, pk):
+        article = Article.objects.get(pk=pk, user=request.user)
+        nltk.download("punkt")
+        words = word_tokenize(article.data)
+        return render(request, self.template_name, {"words": words})
 
 
 # --- Auth --- #
@@ -152,10 +159,6 @@ class ArticlesView(APIView):
         serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data)
 
-
-class AddArticleView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
     @swagger_auto_schema(
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT, properties={"url": openapi.Schema(type=openapi.TYPE_STRING)}, required=["url"]
@@ -187,39 +190,41 @@ class AddArticleView(APIView):
             subprocess.run(
                 command.split(), check=True, cwd="/home/chtholine/PycharmProjects/django_translation/scraper"
             )  # the response will not be returned until this method finishes scraping process
+            article = Article.objects.get(url=canonical_url)
+            content = article.data
+            parts = [content[i : i + 4000] for i in range(0, len(content), 4000)]
+            translated_parts = []
+            for part in parts:
+                translated_part = GoogleTranslator(source="auto", target="uk").translate(part)
+                translated_parts.append(translated_part)
+            translated_content = "".join(translated_parts)
+            article.translation = translated_content
+            article.save()
             return Response({"message": f"{spider_name} spider has parsed: {canonical_url}"})
             # return redirect("articles")  # you can get articles json after parsing
         except subprocess.CalledProcessError as e:
             return Response({"error": str(e)}, status=500)
 
 
-class ShowArticleView(APIView):
+class DetailedArticleView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, id):
-        article = Article.objects.get(id=id, user=request.user)
+    def get(self, request, pk):
+        article = get_object_or_404(Article, pk=pk, user=request.user)
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
 
-
-class UpdateArticleView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    @swagger_auto_schema(request_body=ArticleSerializer)
-    def put(self, request, id):
-        article = Article.objects.get(id=id, user=request.user)
-        serializer = ArticleSerializer(article, data=request.data, partial=True)
+    @swagger_auto_schema(request_body=ArticleUpdateSerializer)
+    def put(self, request, pk):
+        article = Article.objects.get(pk=pk, user=request.user)
+        serializer = ArticleUpdateSerializer(article, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class DeleteArticleView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def delete(self, request, id):
-        article = Article.objects.get(id=id, user=request.user)
+    def delete(self, request, pk):
+        article = Article.objects.get(pk=pk, user=request.user)
         article.user.remove(request.user)
         return Response({"message": f"Article '{article.title}' removed successfully."})
 
@@ -233,11 +238,28 @@ class DictionaryView(APIView):
         serializer = DictionarySerializer(dictionary, many=True)
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "word": openapi.Schema(type=openapi.TYPE_STRING),
+                "translation": openapi.Schema(type=openapi.TYPE_STRING),
+            },
+            required=["word", "translation"],
+        ),
+    )
+    def post(self, request):
+        word = request.data.get("word")
+        translation = request.data.get("translation")
+        dictionary = Dictionary(word=word, translation=translation)
+        dictionary.save()
+        dictionary.user.add(request.user)  # Associate the word with the current user
+        serializer = DictionarySerializer(dictionary)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class AddWordView(APIView):
+
+class TranslationView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-
-    # authentication_classes = [JWTAuthentication]
 
     @swagger_auto_schema(
         request_body=openapi.Schema(
@@ -251,26 +273,19 @@ class AddWordView(APIView):
     def post(self, request):
         word = request.data.get("word")
         translation = GoogleTranslator(source="auto", target="uk").translate(word)
-        dictionary = Dictionary(word=word, translation=translation)
-        dictionary.save()
-        dictionary.user.add(request.user)  # Associate the word with the current user
-        serializer = DictionarySerializer(dictionary)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"word": word, "translation": translation})
 
 
-class ShowWordView(APIView):
+class DetailedDictionaryView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, id):
-        dictionary = Dictionary.objects.get(id=id, user=request.user)
+    def get(self, request, pk):
+        dictionary = Dictionary.objects.get(pk=pk, user=request.user)
         serializer = DictionarySerializer(dictionary)
         return Response(serializer.data)
 
-
-class DeleteWordView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def delete(self, request, id):
-        dictionary = Dictionary.objects.get(id=id, user=request.user)
+    def delete(self, request, pk):
+        dictionary = Dictionary.objects.get(pk=pk, user=request.user)
         dictionary.user.remove(request.user)
         return Response({"message": f"Word '{dictionary.word}' removed successfully."})
+
