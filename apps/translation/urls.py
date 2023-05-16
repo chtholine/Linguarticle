@@ -12,15 +12,9 @@ urlpatterns = [
     path("settings/password/", UpdatePasswordAPIView.as_view(), name="update-password"),
     # Articles
     path("articles/", ArticlesView.as_view(), name="articles"),
-    path("articles/add/", AddArticleView.as_view(), name="add-article"),
-    path("articles/<int:id>/", ShowArticleView.as_view(), name="show-article"),
-    path("articles/<int:id>/update/", UpdateArticleView.as_view(), name="update-article"),
-    path("articles/<int:id>/delete/", DeleteArticleView.as_view(), name="delete-article"),
+    path("articles/<int:pk>/", DetailedArticleView.as_view(), name="show-article"),
     # Dictionary
     path("dictionary/", DictionaryView.as_view(), name="dictionary"),
-    path("dictionary/add/", AddWordView.as_view(), name="add-word"),
-    path("dictionary/<int:id>/", ShowWordView.as_view(), name="show-word"),
-    path("dictionary/<int:id>/delete/", DeleteWordView.as_view(), name="show-word"),
-    # Non-API
-    path("add_article/", submit_url, name="add_article"),
+    path("dictionary/translate/", TranslationView.as_view(), name="translate-word"),
+    path("dictionary/<int:pk>/", DetailedDictionaryView.as_view(), name="show-word"),
 ]
