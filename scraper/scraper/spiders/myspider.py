@@ -66,7 +66,7 @@ class ArticleSpider(scrapy.Spider):
         author = response.xpath("//a/span/text() | //h2/span/text()").get().strip()
         author_data = map_text(author, Style.H2)
         data = response.xpath("//section/descendant::*[not(self::style)]//text()").getall()
-        content = ' '.join([text.strip() for text in data if text.strip() not in (title, author)])
+        content = " ".join([text.strip() for text in data if text.strip() not in (title, author)])
         # for element in response.xpath("//section/descendant::*[not(self::style)]"):
         #     text = element.xpath("text()").get()
         #     if text is not None and text.strip() not in (title, author):
