@@ -1,6 +1,12 @@
 
 <h2>Article Translator 📰🖋</h2>
-Using <a href="https://scrapy.org/">Scrapy</a> this application scrapes articles by URL.<br/>
-Then it saves individually separated words, spaces and characters in the database and sends them via JSON.</p>
-This is necessary for ability to select words for translation and store them in personal dictionary along with scraped articles.
+<h4>General info</h4>
+To translate an article input its url to scrape it with <a href="https://scrapy.org/">Scrapy</a>.<br/>
+Select a saved article from your list to visualize its content.<br/>
+Pick a word to receive its <a href="https://github.com/prataffel/deep_translator">translation</a> in ukrainian.<br/>
+You can add words to your personal dictionary.</p>
 
+>API documentation URLs: <code>/swagger/</code>, <code>/redoc/</code><br/>
+
+<h4>The front end idea of the page:</h4>
+![alt text](https://i.imgur.com/5ictINC.png)
