@@ -2,7 +2,8 @@ import sys
 import os
 import django
 
-sys.path.append("/home/chtholine/PycharmProjects/django_translation")
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(base_dir)
 os.environ["DJANGO_SETTINGS_MODULE"] = "core.settings"
 django.setup()
 
