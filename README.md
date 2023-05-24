@@ -9,4 +9,4 @@ You can add words to your personal dictionary.</p>
 >API documentation URLs: <code>/swagger/</code>, <code>/redoc/</code><br/>
 
 <h4>The front end idea of the page:</h4>
-![alt text](https://i.imgur.com/5ictINC.png)
+<img src="https://i.imgur.com/5ictINC.png" width="800">
