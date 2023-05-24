@@ -4,6 +4,8 @@ Django==4.2.1
 djangorestframework==3.14.0
 djangorestframework_simplejwt==5.2.2
 drf-yasg==1.21.5
+pre-commit==3.3.2
+pyupgrade==3.4.0
 environ==1.0
 django-environ==0.10.0
 Pillow==9.5.0
@@ -16,4 +18,4 @@ asgiref~=3.6.0
 itemadapter~=0.8.0
 nltk~=3.8.1
 requests==2.30.0
-deep_translator==1.10.1
+deep_translator==1.11.0
