@@ -52,7 +52,7 @@ class ArticleSpider(scrapy.Spider):
         ArticleSpider.rules = [
             Rule(LinkExtractor(unique=True), callback="parse_item"),
         ]
-        super(ArticleSpider, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def start_requests(self):
         url = self.url  # Retrieve the URL passed as argument
@@ -63,7 +63,7 @@ class ArticleSpider(scrapy.Spider):
         item = ArticleItem()
         title = response.xpath("//h1/text() | //h1/strong/text()").get().strip()
         title_data = map_text(title, Style.H1)
-        author = response.xpath("//a/span/text() | //h2/span/text()").get().strip()
+        author = response.xpath("//p/a[contains(@rel, 'noopener') and contains(@rel, 'follow')]/text()").get()
         author_data = map_text(author, Style.H2)
         data = response.xpath("//section/descendant::*[not(self::style)]//text()").getall()
         content = " ".join([text.strip() for text in data if text.strip() not in (title, author)])
