@@ -5,6 +5,7 @@
 !docker/app
 !apps
 !core
+!scraper
 !Makefile
 !manage.py
 !requirements.txt
