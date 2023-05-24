@@ -34,7 +34,7 @@ class ArticleView(View):
     template_name = "home.html"
 
     def get(self, request, pk):
-        article = Article.objects.get(pk=pk, user=request.user)
+        article = get_object_or_404(Article, pk=pk, user=request.user)
         nltk.download("punkt")
         words = word_tokenize(article.data)
         return render(request, self.template_name, {"words": words})
@@ -181,14 +181,18 @@ class ArticlesView(APIView):
             article.save()
             return Response({"error": "Existing article is added to the user."}, status=400)
 
+        # add scrapy dir to python path
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        scraper_dir = os.path.join(base_dir, "scraper")
+        os.environ["PYTHONPATH"] = scraper_dir
+        # os.environ["PYTHONPATH"] = "/home/chtholine/PycharmProjects/django_translation/scraper"
         # launch scrapy spider with subprocess
-        os.environ["PYTHONPATH"] = "/home/chtholine/PycharmProjects/django_translation/scraper"
         spider_name = "article_spider"
         user_id = request.user.id
         command = f"scrapy crawl {spider_name} -a url={canonical_url} -a user_id={user_id}"
         try:
             subprocess.run(
-                command.split(), check=True, cwd="/home/chtholine/PycharmProjects/django_translation/scraper"
+                command.split(), check=True, cwd=scraper_dir
             )  # the response will not be returned until this method finishes scraping process
             article = Article.objects.get(url=canonical_url)
             content = article.data
@@ -288,4 +292,3 @@ class DetailedDictionaryView(APIView):
         dictionary = Dictionary.objects.get(pk=pk, user=request.user)
         dictionary.user.remove(request.user)
         return Response({"message": f"Word '{dictionary.word}' removed successfully."})
-
