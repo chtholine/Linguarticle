@@ -2,7 +2,7 @@
 **
 
 # Exclude
-!docker/app
+!docker
 !apps
 !core
 !scraper
