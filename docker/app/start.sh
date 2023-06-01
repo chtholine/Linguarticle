@@ -16,4 +16,4 @@ set -o xtrace
 python manage.py migrate
 
 # Run application.
-python manage.py runserver 0.0.0.0:8000
+gunicorn core.wsgi:application --bind 0.0.0.0:8000
