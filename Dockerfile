@@ -24,6 +24,7 @@ COPY --chown=${USER} --chmod=755 ./docker/app/entrypoint.sh /entrypoint.sh
 COPY --chown=${USER} ./apps apps
 COPY --chown=${USER} ./core core
 COPY --chown=${USER} ./scraper scraper
+COPY --chown=${USER} ./docker docker
 COPY --chown=${USER} ./Makefile Makefile
 COPY --chown=${USER} ./manage.py manage.py
 
