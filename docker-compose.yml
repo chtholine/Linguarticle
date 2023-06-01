@@ -6,8 +6,8 @@ volumes:
 services:
   app:
     build: .
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     user: "1000"
     volumes:
       - ./media:/wd/media:rw
@@ -22,9 +22,10 @@ services:
       - full_dev
     command: /start.sh
 
-
   postgres:
     image: postgres:15
+    ports:
+      - "15432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data:rw
     env_file:
@@ -32,3 +33,10 @@ services:
     profiles:
       - full_dev
       - local_dev
+
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - "8080:8080"
+    depends_on:
+      - app
