@@ -4,6 +4,8 @@ from scrapy import Request
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule
 import scrapy
+from scrapy_splash import SplashRequest
+
 from ..items import ArticleItem
 
 
@@ -55,8 +57,8 @@ class ArticleSpider(scrapy.Spider):
         super().__init__(*args, **kwargs)
 
     def start_requests(self):
-        url = self.url  # Retrieve the URL passed as argument
-        yield Request(url=url, callback=self.parse, meta={"user_id": self.user_id})
+        url = self.url  # Retrieve the URL passed as an argument
+        yield SplashRequest(url=url, callback=self.parse, args={"wait": 0.5}, meta={"user_id": self.user_id})
 
     def parse(self, response, **kwargs):
         user_id = response.meta["user_id"]
