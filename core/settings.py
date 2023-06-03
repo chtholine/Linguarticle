@@ -34,6 +34,8 @@ ALLOWED_HOSTS = env.list("DJANGO__ALLOWED_HOSTS", default=[])
 if DEBUG:
     ALLOWED_HOSTS.extend([])
 
+CSRF_TRUSTED_ORIGINS = env.list("CSRF__TRUSTED_ORIGINS")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -141,7 +143,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "mediafiles"
+MEDIA_ROOT = APPS_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
