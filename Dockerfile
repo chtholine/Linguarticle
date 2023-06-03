@@ -28,6 +28,8 @@ COPY --chown=${USER} ./docker docker
 COPY --chown=${USER} ./Makefile Makefile
 COPY --chown=${USER} ./manage.py manage.py
 
+RUN mkdir -m 755 -p staticfiles && \
+    chown -R ${USER} staticfiles
 
 USER ${USER}
 
