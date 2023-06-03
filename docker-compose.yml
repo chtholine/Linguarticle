@@ -2,15 +2,19 @@ version: '3.9'
 
 volumes:
   postgres_data: { }
+  static_volume:
+  media_volume:
 
 services:
   app:
     build: .
     expose:
       - "8000"
-    user: "1000"
+
+    user: "999:1000" # docker-compose run app id -u user (get user_id for collectstatic permission)
     volumes:
-      - ./media:/wd/media:rw
+      - static_volume:/wd/staticfiles:rw
+      - media_volume:/wd/apps/media:rw
     environment:
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
@@ -36,7 +40,13 @@ services:
 
   nginx:
     build: ./docker/nginx
+    volumes:
+      - static_volume:/wd/staticfiles:rw
+      - media_volume:/wd/apps/media:rw
     ports:
       - "8080:8080"
     depends_on:
       - app
+    profiles:
+      - full_dev
+
