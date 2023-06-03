@@ -19,7 +19,9 @@ d-run-local-dev:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		COMPOSE_PROFILES=local_dev \
 		docker-compose \
-			up --build
+			up --build -d && \
+	docker-compose logs -f postgres & \
+	python manage.py runserver
 
 .PHONY: d-purge
 # Purge all data related with services
