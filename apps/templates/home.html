@@ -1,84 +1,64 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Article Visualization</title>
-    <title>Article Translation</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.5.0/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.5.0/js/bootstrap.bundle.min.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+    <title>Document</title>
     <style>
-        .word {
-            cursor: pointer;
-            text-decoration: underline;
+        body {
+            background-color: #292e33;
+        }
+
+        .nav {
+            align-items: center;
+            padding: 1em;
         }
     </style>
 </head>
 <body>
-{% for word in words %}
-    <span class="word">{{ word }}</span>
-{% endfor %}
-
-<script>
-    $(document).ready(function () {
-        $('.word').on('click', function () {
-            var word = $(this).text();
-            $.ajax({
-                url: '{% url "translate-word" %}',
-                type: 'POST',
-                data: {'word': word},
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'  // Add the CSRF token to headers
-                },
-                success: function (data) {
-                    showDialog(data.translation);  // Display translation in a dialog window
-                },
-                error: function () {
-                    // Handle error case
-                }
-            });
-        });
-    });
-
-    function showDialog(translation) {
-        $('<div></div>').appendTo('body')
-            .html('<p>' + translation + '</p>')
-            .dialog({
-                title: 'Translation',
-                modal: true,
-                width: 400,
-                buttons: {
-                    'Add to Dictionary': function () {
-                        addToDictionary(translation);
-                        $(this).dialog('close');
-                    },
-                    'Close': function () {
-                        $(this).dialog('close');
-                    }
-                },
-                close: function (event, ui) {
-                    $(this).remove();
-                }
-            });
-    }
-
-    function addToDictionary(word) {
-        $.ajax({
-            url: 'api/v1/add_word/',
-            type: 'POST',
-            data: {'word': word},
-            headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'  // Add the CSRF token to headers
-                },
-            success: function (data) {
-                alert('Word added to dictionary!');
-            },
-            error: function () {
-                alert('Failed to add word to dictionary. Please try again later.');
-            }
-        });
-    }
-</script>
+<div class="d-flex flex-row">
+    <div id="article-navbar" class="sticky-top bg-dark overflow-auto"
+         style="min-width: 300px; max-width: 300px; min-height: 100vh; max-height: 100vh">
+        <ul class="nav flex-column bg-dark border-bottom sticky-top" data-bs-theme="dark">
+            <li class="nav-item">
+                <label>
+                    <input class="form-control me-2" type="search" placeholder="Article URL">
+                </label>
+            </li>
+        </ul>
+        <ul class="nav flex-column bg-dark" data-bs-theme="dark">
+            {% for article in articles %}
+                <li class="nav-item p-2">
+                    <button class="btn btn-outline-secondary me-2"
+                            type="button">{{ article.title }}</button>
+                </li>
+            {% endfor %}
+        </ul>
+        <ul class="nav flex-column bg-dark border-top sticky-bottom" data-bs-theme="dark">
+            <li class="nav-item">
+                <label style="color: #f9f9f9">{{ user }}</label>
+            </li>
+        </ul>
+    </div>
+    <div id="article-view" class="overflow-auto p-5">
+        <h2 style="color: #f9f9f9" class="p-3">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et
+            dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+            id est
+            laborum."</h2>
+    </div>
+</div>
+</div>
 </body>
 </html>
