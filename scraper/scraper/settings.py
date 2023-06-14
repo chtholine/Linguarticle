@@ -24,8 +24,8 @@ SPIDER_MODULES = ["scraper.spiders"]
 NEWSPIDER_MODULE = "scraper.spiders"
 
 # SPLASH
-
-SPLASH_URL = "http://192.168.59.103:8050"
+#
+# SPLASH_URL = "http://localhost:8050"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = "scraper (+http://www.yourdomain.com)"
