@@ -202,5 +202,5 @@ SIMPLE_JWT = {
 }
 
 SCRAPY_SETTINGS_MODULE = "scraper.scraper.settings"
-
-SPLASH_URL = "http://localhost:8050"
+#
+# SPLASH_URL = "http://localhost:8050"
