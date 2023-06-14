@@ -18,7 +18,7 @@ d-run:
 d-run-local-dev:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		COMPOSE_PROFILES=local_dev \
-		docker-compose \
+		docker compose \
 			up --build -d && \
 	docker-compose logs -f postgres & \
 	python manage.py runserver
