@@ -49,4 +49,3 @@ services:
       - app
     profiles:
       - full_dev
-
