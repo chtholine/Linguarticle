@@ -31,13 +31,9 @@ def url_valid(url):
 
 
 class ArticleView(View):
-    template_name = "home.html"
-
-    def get(self, request, pk):
-        article = get_object_or_404(Article, pk=pk, user=request.user)
-        nltk.download("punkt")
-        words = word_tokenize(article.data)
-        return render(request, self.template_name, {"words": words})
+    def get(self, request):
+        articles = Article.objects.order_by("date_added")
+        return render(request, "home.html", {"articles": articles, "user": request.user})
 
 
 # --- Auth --- #
@@ -194,16 +190,16 @@ class ArticlesView(APIView):
             subprocess.run(
                 command.split(), check=True, cwd=scraper_dir
             )  # the response will not be returned until this method finishes scraping process
-            article = Article.objects.get(url=canonical_url)
-            content = article.data
-            parts = [content[i : i + 4000] for i in range(0, len(content), 4000)]
-            translated_parts = []
-            for part in parts:
-                translated_part = GoogleTranslator(source="auto", target="uk").translate(part)
-                translated_parts.append(translated_part)
-            translated_content = "".join(translated_parts)
-            article.translation = translated_content
-            article.save()
+            # article = Article.objects.get(url=canonical_url)
+            # content = article.data
+            # parts = [content[i : i + 4000] for i in range(0, len(content), 4000)]
+            # translated_parts = []
+            # for part in parts:
+            #     translated_part = GoogleTranslator(source="auto", target="uk").translate(part)
+            #     translated_parts.append(translated_part)
+            # translated_content = "".join(translated_parts)
+            # article.translation = translated_content
+            # article.save()
             return Response({"message": f"{spider_name} spider has parsed: {canonical_url}"})
             # return redirect("articles")  # you can get articles json after parsing
         except subprocess.CalledProcessError as e:
