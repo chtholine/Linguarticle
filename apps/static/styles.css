@@ -1,17 +1,17 @@
-.hide {
-    display: none;
+body {
+    background-color: #292e33;
 }
 
-#translation-dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f9f9f9;
-    padding: 20px;
-    border: 1px solid #ccc;
+.nav {
+    padding: 1em;
 }
 
-#save-button {
-    margin-top: 10px;
+#article-navbar {
+
+    min-height: 100vh;
+    max-height: 100vh;
+}
+
+#article-view {
+
 }
