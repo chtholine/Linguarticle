@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,22 +11,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
+    <link href="../static/styles.css" rel="stylesheet" />
     <title>Document</title>
-    <style>
-        body {
-            background-color: #292e33;
-        }
-
-        .nav {
-            align-items: center;
-            padding: 1em;
-        }
-    </style>
 </head>
 <body>
-<div class="d-flex flex-row">
-    <div id="article-navbar" class="sticky-top bg-dark overflow-auto"
-         style="min-width: 300px; max-width: 300px; min-height: 100vh; max-height: 100vh">
+<div class="d-flex flex-row row">
+    <div id="article-navbar" class="sticky-top bg-dark overflow-auto col-sm-2">
         <ul class="nav flex-column bg-dark border-bottom sticky-top" data-bs-theme="dark">
             <li class="nav-item">
                 <label>
@@ -33,21 +24,21 @@
                 </label>
             </li>
         </ul>
-        <ul class="nav flex-column bg-dark" data-bs-theme="dark">
+        <ul class="nav flex-column bg-dark" data-bs-theme="dark" style="max-height: 100%">
             {% for article in articles %}
                 <li class="nav-item p-2">
-                    <button class="btn btn-outline-secondary me-2"
+                    <button class="btn btn-outline-secondary me-2 text-truncate overflow-hidden col-sm-4"
                             type="button">{{ article.title }}</button>
                 </li>
             {% endfor %}
         </ul>
-        <ul class="nav flex-column bg-dark border-top sticky-bottom" data-bs-theme="dark">
+        <ul class="nav flex-column bg-dark border-top fixed-bottom" style="max-width: 16%" data-bs-theme="dark">
             <li class="nav-item">
                 <label style="color: #f9f9f9">{{ user }}</label>
             </li>
         </ul>
     </div>
-    <div id="article-view" class="overflow-auto p-5">
+    <div id="article-view" class="overflow-auto p-5 col-sm-8">
         <h2 style="color: #f9f9f9" class="p-3">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
             tempor incididunt ut labore et
             dolore
@@ -58,7 +49,6 @@
             id est
             laborum."</h2>
     </div>
-</div>
 </div>
 </body>
 </html>
