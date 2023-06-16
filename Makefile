@@ -2,7 +2,6 @@
 # Make all actions needed for run from zero.
 d-full-run:
 	@make init-dev && \
-		make init-config && \
 		make d-run
 
 .PHONY: d-run
@@ -29,11 +28,6 @@ d-purge:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		docker-compose \
 			down --volumes --remove-orphans --rmi local --timeout 0
-
-.PHONY: init-config
-# Init config files
-init-config:
-	@cp docker-compose.override.dev.yml docker-compose.override.yml
 
 .PHONY: init-dev
 # Init environment for development
