@@ -1,17 +1,8 @@
-body {
-    background-color: #292e33;
+main {
+    display: flex;
+    height: 100vh;
 }
 
-.nav {
-    padding: 1em;
-}
-
-#article-navbar {
-
-    min-height: 100vh;
-    max-height: 100vh;
-}
-
-#article-view {
-
+li {
+    box-sizing: border-box;
 }
