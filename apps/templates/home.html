@@ -11,44 +11,47 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
-    <link href="../static/styles.css" rel="stylesheet" />
-    <title>Document</title>
+    <link href="../static/styles.css" rel="stylesheet"/>
+    <title>Linguarticle</title>
 </head>
 <body>
-<div class="d-flex flex-row row">
-    <div id="article-navbar" class="sticky-top bg-dark overflow-auto col-sm-2">
-        <ul class="nav flex-column bg-dark border-bottom sticky-top" data-bs-theme="dark">
+<main>
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
+        <ul class="nav flex-column bg-dark sticky-top d-flex align-items-center mb-3 mb-md-0 me-md-auto"
+            data-bs-theme="dark">
             <li class="nav-item">
                 <label>
                     <input class="form-control me-2" type="search" placeholder="Article URL">
                 </label>
             </li>
         </ul>
-        <ul class="nav flex-column bg-dark" data-bs-theme="dark" style="max-height: 100%">
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto d-flex">
             {% for article in articles %}
-                <li class="nav-item p-2">
-                    <button class="btn btn-outline-secondary me-2 text-truncate overflow-hidden col-sm-4"
+                <li class="nav-item pb-3">
+                    <button class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
                             type="button">{{ article.title }}</button>
                 </li>
             {% endfor %}
         </ul>
-        <ul class="nav flex-column bg-dark border-top fixed-bottom" style="max-width: 16%" data-bs-theme="dark">
-            <li class="nav-item">
-                <label style="color: #f9f9f9">{{ user }}</label>
-            </li>
-        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" class="rounded-circle me-2" width="32" height="32">
+                <strong> {{ user.username }}</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <li><a class="dropdown-item" href="#">New project...</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+        </div>
     </div>
-    <div id="article-view" class="overflow-auto p-5 col-sm-8">
-        <h2 style="color: #f9f9f9" class="p-3">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et
-            dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-            id est
-            laborum."</h2>
-    </div>
-</div>
+</main>
 </body>
 </html>
