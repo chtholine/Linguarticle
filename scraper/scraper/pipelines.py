@@ -14,7 +14,6 @@ class ScraperPipeline:
         article = Article.objects.create(url=url)
         article.user.add(spider.user_id)
         article.title = item["title"]
-        article.author = item["author"]
-        article.data = item["data"]
+        article.data = item["data"].decode("utf-8")
         article.save()
         return item
