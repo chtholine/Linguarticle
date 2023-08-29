@@ -60,17 +60,17 @@ DOWNLOAD_DELAY = 3
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
     "scraper.middlewares.ScraperSpiderMiddleware": 543,
-    "scrapy_splash.SplashDeduplicateArgsMiddleware": 100,
+    # "scrapy_splash.SplashDeduplicateArgsMiddleware": 100,
 }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-    # "scraper.middlewares.ScraperDownloaderMiddleware": 543,
-    "scrapy_splash.SplashCookiesMiddleware": 723,
-    "scrapy_splash.SplashMiddleware": 725,
-    "scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware": 810,
-}
+# DOWNLOADER_MIDDLEWARES = {
+#     # "scraper.middlewares.ScraperDownloaderMiddleware": 543,
+#     "scrapy_splash.SplashCookiesMiddleware": 723,
+#     "scrapy_splash.SplashMiddleware": 725,
+#     "scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware": 810,
+# }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -91,7 +91,7 @@ ITEM_PIPELINES = {
     "scraper.pipelines.ScraperPipeline": 300,
 }
 
-DUPEFILTER_CLASS = "scrapy_splash.SplashAwareDupeFilter"
+# DUPEFILTER_CLASS = "scrapy_splash.SplashAwareDupeFilter"
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
