@@ -33,7 +33,8 @@ def url_valid(url):
 class ArticleView(View):
     def get(self, request):
         articles = Article.objects.order_by("date_added")
-        return render(request, "home.html", {"articles": articles, "user": request.user})
+        last_article = Article.objects.order_by("date_added").last()
+        return render(request, "home.html", {"articles": articles, "user": request.user, "article": last_article.data})
 
 
 # --- Auth --- #
