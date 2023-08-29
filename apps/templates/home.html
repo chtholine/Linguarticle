@@ -15,36 +15,112 @@
     <title>Linguarticle</title>
 </head>
 <body>
+<script>function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (const i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("article-form");
+    const loaderLine = document.querySelector(".loader-line");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        const articleUrl = document.getElementById("article-url").value; // Get the value from the input field
+
+        const jsonData = {
+            "url": articleUrl
+        };
+
+        // Show the loader element
+        loaderLine.style.visibility = "visible";
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'articles' %}", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Handle successful response if needed
+                    console.log("Article URL sent successfully!");
+                    document.getElementById("article-url").value = '';
+                    location.reload();
+                } else {
+                    // Handle error if needed
+                    console.error("Error sending article URL:", xhr.statusText);
+                    document.getElementById("article-url").value = '';
+                }
+                loaderLine.style.visibility = "hidden";
+            }
+        };
+
+        xhr.send(JSON.stringify(jsonData));
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const iframe = document.getElementById("article-iframe");
+
+    iframe.addEventListener("load", function () {
+        const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
+
+        iframeContent.addEventListener("mouseup", function () {
+            const selectedText = iframeContent.getSelection().toString();
+
+            if (selectedText.trim() !== "") {
+                console.log("Selected Text:", selectedText);
+            }
+        });
+    });
+});
+</script>
 <main>
     <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
         <ul class="nav flex-column bg-dark sticky-top d-flex align-items-center mb-3 mb-md-0 me-md-auto"
             data-bs-theme="dark">
             <li class="nav-item">
                 <label>
-                    <input class="form-control me-2" type="search" placeholder="Article URL">
+                    <form id="article-form">
+                        <input id="article-url" class="form-control me-2" type="search" name="article_url"
+                               placeholder="Article URL">
+                        <div class="loader-line"></div>
+                    </form>
                 </label>
             </li>
         </ul>
         <hr>
-        <ul class="nav nav-pills flex-column mb-auto d-flex">
-            {% for article in articles %}
-                <li class="nav-item pb-3">
-                    <button class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
-                            type="button">{{ article.title }}</button>
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="scrollable-nav">
+            <ul class="nav nav-pills flex-column mb-auto">
+                {% for article in articles reversed %}
+                    <li class="nav-item pb-3">
+                        <button class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
+                                type="button">{{ article.title }}</button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
         <hr>
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" class="rounded-circle me-2" width="32" height="32">
-                <strong> {{ user.username }}</strong>
+                <img src=" " alt="" class="rounded-circle me-2" width="32" height="32" style="background: aliceblue">
+                <strong>{{ user }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
                 <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
@@ -52,6 +128,7 @@
             </ul>
         </div>
     </div>
+    <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ article }}" style="border: none;"></iframe>
 </main>
 </body>
 </html>
