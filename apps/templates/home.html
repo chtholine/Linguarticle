@@ -107,10 +107,10 @@
         });
     });
 </script>
-{#{% if not user.is_authenticated %}#}
-<div class="container">
-    <a id="modal_trigger" href="#modal" class="btn">Click here to Login or register</a>
-    <div id="modal" class="popupContainer" style="display:none;">
+{% if not user.is_authenticated %}
+<div class="container" style="display: grid; align-content: center; justify-content: center">
+{#    <a id="modal_trigger" href="#modal" class="btn">Click here to Login or register</a>#}
+    <div id="modal" class="popupContainer" style="display:block;">
         <header class="popupHeader">
             <span class="header_title">Login</span>
             <span class="modal_close"><i class="fa fa-times"></i></span>
@@ -137,8 +137,8 @@
                 </div>
 
                 <div class="action_btns">
-                    <div class="one_half"><a href="#" id="login_form" class="btn">Login</a></div>
-                    <div class="one_half last"><a href="#" id="register_form" class="btn">Sign up</a></div>
+                    <div class="one_half"><a href="#" id="login_form" class="btn btn-outline-secondary">Login</a></div>
+                    <div class="one_half last"><a href="#" id="register_form" class="btn btn-outline-secondary">Sign up</a></div>
                 </div>
             </div>
 
@@ -152,11 +152,6 @@
                     <label>Password</label>
                     <input type="password"/>
                     <br/>
-
-                    <div class="checkbox">
-                        <input id="remember" type="checkbox"/>
-                        <label for="remember">Remember me on this computer</label>
-                    </div>
 
                     <div class="action_btns">
                         <div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i>
@@ -182,11 +177,6 @@
                     <label>Password</label>
                     <input type="password"/>
                     <br/>
-
-                    <div class="checkbox">
-                        <input id="send_updates" type="checkbox"/>
-                        <label for="send_updates">Send me occasional email updates</label>
-                    </div>
 
                     <div class="action_btns">
                         <div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i>
@@ -232,10 +222,10 @@ $(function () {
         return false;
     });
 });</script>
-{#{% endif %}#}
+{% else %}
 {#<div style="height: 100vh; width: 100vw; filter: blur(10px);">#}
 <main>
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; max-height: 100vh">
         <ul class="nav flex-column bg-dark sticky-top d-flex align-items-center mb-3 mb-md-0 me-md-auto"
             data-bs-theme="dark">
             <li class="nav-item">
@@ -249,7 +239,7 @@ $(function () {
             </li>
         </ul>
         <hr>
-        <div class="scrollable-nav vh-75">
+        <div class="scrollable-nav" style="min-height: 83%">
             <ul class="nav nav-pills flex-column mb-auto">
                 {% for article in articles reversed %}
                     <li class="nav-item pb-3">
@@ -277,5 +267,6 @@ $(function () {
     </div>
     <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ article }}" style="border: none;"></iframe>
 </main>
+{% endif %}
 </body>
 </html>
