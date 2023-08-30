@@ -6,87 +6,234 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <link href="../static/styles.css" rel="stylesheet"/>
     <title>Linguarticle</title>
 </head>
 <body>
-<script>function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (const i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+<script>
+    // cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
             }
         }
+        return cookieValue;
     }
-    return cookieValue;
-}
 
+    // loading line
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("article-form");
+        const loaderLine = document.querySelector(".loader-line");
 
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("article-form");
-    const loaderLine = document.querySelector(".loader-line");
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent default form submission behavior
+            const articleUrl = document.getElementById("article-url").value; // Get the value from the input field
 
-        const articleUrl = document.getElementById("article-url").value; // Get the value from the input field
+            const jsonData = {
+                "url": articleUrl
+            };
 
-        const jsonData = {
-            "url": articleUrl
-        };
+            // show the loader element
+            loaderLine.style.visibility = "visible";
 
-        // Show the loader element
-        loaderLine.style.visibility = "visible";
-
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "{% url 'articles' %}", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    // Handle successful response if needed
-                    console.log("Article URL sent successfully!");
-                    document.getElementById("article-url").value = '';
-                    location.reload();
-                } else {
-                    // Handle error if needed
-                    console.error("Error sending article URL:", xhr.statusText);
-                    document.getElementById("article-url").value = '';
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "{% url 'articles' %}", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log("Article URL sent successfully!");
+                        document.getElementById("article-url").value = '';
+                        location.reload();
+                    } else {
+                        console.error("Error sending article URL:", xhr.statusText);
+                        document.getElementById("article-url").value = '';
+                    }
+                    loaderLine.style.visibility = "hidden";
                 }
-                loaderLine.style.visibility = "hidden";
-            }
-        };
+            };
 
-        xhr.send(JSON.stringify(jsonData));
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const iframe = document.getElementById("article-iframe");
-
-    iframe.addEventListener("load", function () {
-        const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
-
-        iframeContent.addEventListener("mouseup", function () {
-            const selectedText = iframeContent.getSelection().toString();
-
-            if (selectedText.trim() !== "") {
-                console.log("Selected Text:", selectedText);
-            }
+            xhr.send(JSON.stringify(jsonData));
         });
     });
-});
+
+
+    // text selection
+    document.addEventListener("DOMContentLoaded", function () {
+        const iframe = document.getElementById("article-iframe");
+
+        iframe.addEventListener("load", function () {
+
+            const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
+            const articleButtons = document.querySelectorAll(".article-button");
+
+            // Add click event listener to each article button
+            articleButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    // Extract the content associated with the clicked article
+                    // Set the iframe's srcdoc attribute to the extracted content
+                    iframe.srcdoc = button.getAttribute("data-article-content");
+                });
+            });
+
+            iframeContent.addEventListener("mouseup", function () {
+                const selectedText = iframeContent.getSelection().toString();
+
+                if (selectedText.trim() !== "") {
+                    console.log("Selected Text:", selectedText);
+                }
+            });
+        });
+    });
 </script>
+{#{% if not user.is_authenticated %}#}
+<div class="container">
+    <a id="modal_trigger" href="#modal" class="btn">Click here to Login or register</a>
+    <div id="modal" class="popupContainer" style="display:none;">
+        <header class="popupHeader">
+            <span class="header_title">Login</span>
+            <span class="modal_close"><i class="fa fa-times"></i></span>
+        </header>
+
+        <section class="popupBody">
+            <!-- Social Login -->
+            <div class="social_login">
+                <div class="">
+                    <a href="#" class="social_box fb">
+                        <span class="icon"><i class="fa fa-facebook"></i></span>
+                        <span class="icon_title">Connect with Facebook</span>
+
+                    </a>
+
+                    <a href="#" class="social_box google">
+                        <span class="icon"><i class="fa fa-google-plus"></i></span>
+                        <span class="icon_title">Connect with Google</span>
+                    </a>
+                </div>
+
+                <div class="centeredText">
+                    <span>Or use your Email address</span>
+                </div>
+
+                <div class="action_btns">
+                    <div class="one_half"><a href="#" id="login_form" class="btn">Login</a></div>
+                    <div class="one_half last"><a href="#" id="register_form" class="btn">Sign up</a></div>
+                </div>
+            </div>
+
+            <!-- Username & Password Login form -->
+            <div class="user_login">
+                <form>
+                    <label>Email / Username</label>
+                    <input type="text"/>
+                    <br/>
+
+                    <label>Password</label>
+                    <input type="password"/>
+                    <br/>
+
+                    <div class="checkbox">
+                        <input id="remember" type="checkbox"/>
+                        <label for="remember">Remember me on this computer</label>
+                    </div>
+
+                    <div class="action_btns">
+                        <div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i>
+                            Back</a></div>
+                        <div class="one_half last"><a href="#" class="btn btn_red">Login</a></div>
+                    </div>
+                </form>
+
+                <a href="#" class="forgot_password">Forgot password?</a>
+            </div>
+
+            <!-- Register Form -->
+            <div class="user_register">
+                <form>
+                    <label>Full Name</label>
+                    <input type="text"/>
+                    <br/>
+
+                    <label>Email Address</label>
+                    <input type="email"/>
+                    <br/>
+
+                    <label>Password</label>
+                    <input type="password"/>
+                    <br/>
+
+                    <div class="checkbox">
+                        <input id="send_updates" type="checkbox"/>
+                        <label for="send_updates">Send me occasional email updates</label>
+                    </div>
+
+                    <div class="action_btns">
+                        <div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i>
+                            Back</a></div>
+                        <div class="one_half last"><a href="#" class="btn btn_red">Register</a></div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://leanmodal.finelysliced.com.au/js/jquery.leanModal.min.js'></script>
+<script>// Plugin options and our code
+$("#modal_trigger").leanModal({
+    top: 100,
+    overlay: 0.6,
+    closeButton: ".modal_close"
+});
+
+$(function () {
+    // Calling Login Form
+    $("#login_form").click(function () {
+        $(".social_login").hide();
+        $(".user_login").show();
+        return false;
+    });
+
+    // Calling Register Form
+    $("#register_form").click(function () {
+        $(".social_login").hide();
+        $(".user_register").show();
+        $(".header_title").text('Register');
+        return false;
+    });
+
+    // Going back to Social Forms
+    $(".back_btn").click(function () {
+        $(".user_login").hide();
+        $(".user_register").hide();
+        $(".social_login").show();
+        $(".header_title").text('Login');
+        return false;
+    });
+});</script>
+{#{% endif %}#}
+{#<div style="height: 100vh; width: 100vw; filter: blur(10px);">#}
 <main>
     <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
         <ul class="nav flex-column bg-dark sticky-top d-flex align-items-center mb-3 mb-md-0 me-md-auto"
@@ -102,12 +249,12 @@ document.addEventListener("DOMContentLoaded", function () {
             </li>
         </ul>
         <hr>
-        <div class="scrollable-nav">
+        <div class="scrollable-nav vh-75">
             <ul class="nav nav-pills flex-column mb-auto">
                 {% for article in articles reversed %}
                     <li class="nav-item pb-3">
-                        <button class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
-                                type="button">{{ article.title }}</button>
+                        <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
+                                type="button" data-article-content="{{ article.data }}">{{ article.title }}</button>
                     </li>
                 {% endfor %}
             </ul>
