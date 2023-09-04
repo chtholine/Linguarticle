@@ -10,7 +10,7 @@ You can add words to your personal dictionary.</p>
 <h4>Getting Started</h4>
 To get started, clone this repository to your local machine:<br/></p>
 <code>git clone https://github.com/chtholine/Linguarticle.git</code><br/>
-<code>cd machine-learning-tasks</code>
+<code>cd Linguarticle</code>
 <h4>Commands</h4>
 Install all dependencies and run: <code>make d-full-run</code><br/>
 Simply run: <code>make d-run</code><br/>
