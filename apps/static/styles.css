@@ -117,13 +117,21 @@ h1 {
 		display: none;
 }
 
+.container {
+	background-image: url("https://cutewallpaper.org/21/background-gif-1920x1080/Pin-on-nim-gif.gif");
+	display: grid;
+	place-content: center;
+	min-height: 100vh;
+	min-width: 100vw;
+}
+
 .popupContainer {
-		position: absolute;
-		width: 330px;
+		position: relative;
+		width: 25em;
 		height: auto;
-		left: 45%;
-		top: 60px;
-		background: #FFF;
+		bottom: 10em;
+		background: rgba(255, 255, 255, 0.27);
+		backdrop-filter: blur(10px);
 }
 
 #modal_trigger {
@@ -134,31 +142,8 @@ h1 {
 		border-radius: 4px;
 }
 
-/*.btn {*/
-/*		padding: 10px 20px;*/
-/*		background: #F4F4F2;*/
-/*}*/
-
 .btn_red {
 		background: #ED6347;
-		color: #FFF;
-}
-
-/*.btn:hover {*/
-/*		background: #E4E4E2;*/
-/*}*/
-
-.btn_red:hover {
-		background: #C12B05;
-}
-
-a.btn {
-		color: #666;
-		text-align: center;
-		text-decoration: none;
-}
-
-a.btn_red {
 		color: #FFF;
 }
 
@@ -273,16 +258,6 @@ a.btn_red {
 		margin-bottom: 5px;
 }
 
-.user_login input[type="text"],
-.user_login input[type="email"],
-.user_login input[type="password"] {
-		display: block;
-		width: 90%;
-		padding: 10px;
-		border: 1px solid #DDD;
-		color: #666;
-}
-
 .user_login input[type="checkbox"] {
 		float: left;
 		margin-right: 5px;
@@ -317,16 +292,6 @@ a.btn_red {
 		margin-bottom: 5px;
 }
 
-.user_register input[type="text"],
-.user_register input[type="email"],
-.user_register input[type="password"] {
-		display: block;
-		width: 90%;
-		padding: 10px;
-		border: 1px solid #DDD;
-		color: #666;
-}
-
 .user_register input[type="checkbox"] {
 		float: left;
 		margin-right: 5px;
@@ -340,4 +305,8 @@ a.btn_red {
 		margin-bottom: 10px;
 		clear: both;
 		overflow: hidden;
+}
+
+.form-control {
+	background-color: #ffffff87;
 }
