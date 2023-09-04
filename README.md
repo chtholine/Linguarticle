@@ -1,4 +1,4 @@
-<h2>Article Translator 📰🖋</h2>
+<h2>Linguarticle 📰🖋</h2>
 <h4>General info</h4>
 To translate an article input its url to scrape it with <a href="https://scrapy.org/">Scrapy</a>.<br/>
 Select a saved article from your list to visualize its content.<br/>
