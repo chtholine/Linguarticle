@@ -1,0 +1,243 @@
+<script>
+    // cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // loading line
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("article-form");
+        const loaderLine = document.querySelector(".loader-line");
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            const articleUrl = document.getElementById("article-url").value; // Get the value from the input field
+
+            const jsonData = {
+                "url": articleUrl
+            };
+
+            // show the loader element
+            loaderLine.style.visibility = "visible";
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "{% url 'articles' %}", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log("Article URL sent successfully!");
+                        document.getElementById("article-url").value = '';
+                        location.reload();
+                    } else {
+                        console.error("Error sending article URL:", xhr.statusText);
+                        document.getElementById("article-url").value = '';
+                    }
+                    loaderLine.style.visibility = "hidden";
+                }
+            };
+
+            xhr.send(JSON.stringify(jsonData));
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const iframe = document.getElementById("article-iframe");
+        const articleButtons = document.querySelectorAll(".article-button");
+
+        // Add click event listener to each article button
+        articleButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const articleId = button.getAttribute("data-article-id");
+
+                // Fetch the article content using AJAX
+                fetch(`/api/v1/articles/${articleId}/`) // Replace with your API endpoint
+                    .then(response => response.json())
+                    .then(content => {
+                        // Set the iframe's srcdoc attribute to the fetched content
+                        iframe.srcdoc = content.data;
+                    })
+                    .catch(error => {
+                        console.error("Error fetching article content:", error);
+                    });
+            });
+        });
+
+        iframe.addEventListener("load", function () {
+            const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
+
+            iframeContent.addEventListener("mouseup", function () {
+                const selectedText = iframeContent.getSelection().toString();
+
+                if (selectedText.trim() !== "") {
+                    console.log("Selected Text:", selectedText);
+                }
+            });
+        });
+    });
+
+    // Function to handle the logout process
+    function logout() {
+        // Send an AJAX request to log the user out
+        fetch('/api/v1/logout/', {
+            method: 'POST', // or 'GET' if your logout endpoint supports GET requests
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+                // Add any other required headers here
+            },
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    // Successful logout
+                    console.log('User logged out successfully');
+                    // Redirect or update UI as needed
+                    window.location.href = '/'; // Redirect to the home page, for example
+                } else {
+                    // Handle logout failure, e.g., display an error message
+                    console.error('Logout failed');
+                }
+            })
+            .catch(error => {
+                // Handle network errors or other issues
+                console.error('Error during logout:', error);
+            });
+    }
+
+    // Attach an event listener to the "Log out" link
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoutLink = document.querySelector('#logout-link');
+
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent the link from navigating
+                logout(); // Call the logout function when the link is clicked
+            });
+        }
+    });
+
+    // Function to handle the login process
+    function login() {
+        const usernameOrEmail = document.querySelector('#login-form input[type="text"]').value;
+        const password = document.querySelector('#login-form input[type="password"]').value;
+
+        // Prepare the login data
+        const loginData = {
+            username_or_email: usernameOrEmail,
+            password: password
+        };
+
+        // Send an AJAX request to log in
+        fetch('/api/v1/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify(loginData)
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    // Successful login
+                    console.log('User logged in successfully');
+                    location.reload();
+                    // Redirect or update UI as needed
+                } else {
+                    // Handle login failure, e.g., display an error message
+                    console.error('Login failed');
+                }
+            })
+            .catch(error => {
+                // Handle network errors or other issues
+                console.error('Error during login:', error);
+            });
+    }
+
+    // Function to handle the sign-up process
+    function signup() {
+        const username = document.querySelector('#signup-form input[type="text"]').value;
+        const email = document.querySelector('#signup-form input[type="email"]').value;
+        const password = document.querySelector('#signup-form input[type="password"]').value;
+
+        // Prepare the registration data
+        const registrationData = {
+            username: username,
+            email: email,
+            password: password
+        };
+
+        // Send an AJAX request to register
+        fetch('/api/v1/signup/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(registrationData)
+        })
+            .then(response => {
+                if (response.status === 201) {
+                    // Successful registration
+                    console.log('User registered successfully');
+                    // Redirect or update UI as needed
+                    location.reload();
+                } else {
+                    // Handle registration failure, e.g., display an error message
+                    console.error('Registration failed');
+                }
+            })
+            .catch(error => {
+                // Handle network errors or other issues
+                console.error('Error during registration:', error);
+            });
+    }
+
+    // Attach event listeners to the "Login" and "Register" buttons
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginButton = document.querySelector('#login-form .btn-outline-primary');
+        const signupButton = document.querySelector('#signup-form .btn-outline-primary');
+        const loginInput = document.querySelector('#login-form');
+        const signupInput = document.querySelector('#signup-form');
+
+        // Listen for Enter key press on the password input fields for both forms
+        loginInput.addEventListener('keyup', function (event) {
+            if (event.key === 'Enter') {
+                login();
+            }
+        });
+
+        signupInput.addEventListener('keyup', function (event) {
+            if (event.key === 'Enter') {
+                signup();
+            }
+        });
+
+        if (loginButton) {
+            loginButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                login();
+            });
+        }
+
+        if (signupButton) {
+            signupButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                signup();
+            });
+        }
+    });
+</script>
