@@ -1,0 +1,112 @@
+<div class="container">
+    <div id="modal" class="popupContainer">
+        <section class="popupBody">
+            <!-- Social Login -->
+            <div class="social_login">
+                <div>
+                    <a href="#" class="social_box google">
+                        <span class="icon"><i class="fa fa-google-plus"></i></span>
+                        <span class="icon_title">Connect with Google</span>
+                    </a>
+                </div>
+
+                <div class="centeredText">
+                    <span>Or use your Email address</span>
+                </div>
+
+                <div class="row">
+                    <div class="col"><a href="#" id="login_form" class="btn btn-outline-secondary">Login</a>
+                    </div>
+                    <div class="col"><a href="#" id="register_form" class="btn btn-outline-secondary">Sign
+                        up</a></div>
+                </div>
+            </div>
+
+            <!-- Username & Password Login form -->
+            <div class="user_login" id="login-form">
+                <form>
+                    <label>Email / Username</label>
+                    <input class="form-control" type="text"/>
+                    <br/>
+
+                    <label>Password</label>
+                    <input class="form-control" type="password"/>
+                    <br/>
+
+                    <div class="row">
+                        <div class="col"><a href="#" class="btn login-back btn-outline-secondary"><i
+                                class="fa fa-angle-double-left"></i>
+                            Back</a></div>
+                        <div class="col"><a href="#" class="btn btn-outline-primary">Login</a></div>
+                    </div>
+                </form>
+
+                <a href="#" class="forgot_password text-primary">Forgot password?</a>
+            </div>
+
+            <!-- Register Form -->
+            <div class="user_register" id="signup-form">
+                <form>
+                    <label>Username</label>
+                    <input class="form-control" type="text"/>
+                    <br/>
+
+                    <label>Email Address</label>
+                    <input class="form-control" type="email"/>
+                    <br/>
+
+                    <label>Password</label>
+                    <input class="form-control" type="password"/>
+                    <br/>
+
+                    <div class="row">
+                        <div class="col"><a href="#" class="btn register-back btn-outline-secondary"><i
+                                class="fa fa-angle-double-left"></i>
+                            Back</a></div>
+                        <div class="col"><a href="#" class="btn btn-outline-primary">Register</a></div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://leanmodal.finelysliced.com.au/js/jquery.leanModal.min.js'></script>
+<script>
+    // jQuery animation
+    $(function () {
+        // Calling Login Form
+        $("#login_form").click(function () {
+            $(".social_login").fadeOut(300, function () {
+                $(".user_login").fadeIn(300);
+            });
+            return false;
+        });
+
+        // Calling Register Form
+        $("#register_form").click(function () {
+            $(".social_login").fadeOut(300, function () {
+                $(".user_register").fadeIn(300);
+                $(".header_title").text('Register');
+            });
+            return false;
+        });
+
+        // Going back to Social Forms
+        $(".login-back").click(function () {
+            $(".user_login").fadeOut(300, function () {
+                $(".social_login").fadeIn(300);
+                $(".header_title").text('Login');
+            });
+            return false;
+        });
+
+        $(".register-back").click(function () {
+            $(".user_register").fadeOut(300, function () {
+                $(".social_login").fadeIn(300);
+                $(".header_title").text('Login');
+            });
+            return false;
+        });
+    });
+</script>
