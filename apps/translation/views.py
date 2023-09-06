@@ -34,15 +34,16 @@ def url_valid(url):
 
 class ArticleView(View):
     def get(self, request):
-        if request.user.is_authenticated:
-            articles = Article.objects.filter(user=request.user).order_by("date_added")
-            if articles is not None:
-                last_article = articles.last()
-                return render(
-                    request, "index.html", {"articles": articles, "user": request.user, "article": last_article.data}
-                )
-            return render(request, "index.html", {"articles": articles, "user": request.user})
-        return render(request, "index.html")
+        if not request.user.is_authenticated:
+            return render(request, "index.html")
+        articles = Article.objects.filter(user=request.user).order_by("date_added")
+        dictionary = Dictionary.objects.filter(user=request.user).order_by("date_added")
+        last_article = articles.last()
+        return render(
+            request,
+            "index.html",
+            {"articles": articles, "user": request.user, "words": dictionary, "last_article": last_article},
+        )
 
 
 # --- Auth --- #
