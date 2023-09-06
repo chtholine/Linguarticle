@@ -9,7 +9,7 @@ li {
 
 .scrollable-nav {
     overflow-y: auto;
-    max-height: calc(100vh - 320px);
+    flex-grow: 1;
 }
 
 
@@ -18,7 +18,7 @@ li {
 }
 
 .btn {
-	transition: color .20s ease-in-out,background-color .20s ease-in-out,border-color .20s ease-in-out,box-shadow .20s ease-in-out;
+    transition: color .20s ease-in-out, background-color .20s ease-in-out, border-color .20s ease-in-out, box-shadow .20s ease-in-out;
 }
 
 .nav-pills .btn {
@@ -68,222 +68,210 @@ li {
     }
 }
 
-.dropdown {
-    position: fixed;
-    bottom: 1em;
-}
-
 body {
-		font-family: 'Source Sans Pro', sans-serif;
-		font-size: 14px;
-		color: #666;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    color: #666;
 }
 
 h1 {
-		text-align: center;
-		margin-bottom: 0;
-		margin-top: 60px;
+    text-align: center;
+    margin-bottom: 0;
+    margin-top: 60px;
 }
 
 .container {
-	background-image: url("https://cutewallpaper.org/21/background-gif-1920x1080/Pin-on-nim-gif.gif");
-	display: grid;
-	place-content: center;
-	min-height: 100vh;
-	min-width: 100vw;
+    background-image: url("https://cutewallpaper.org/21/background-gif-1920x1080/Pin-on-nim-gif.gif");
+    display: grid;
+    place-content: center;
+    min-height: 100vh;
+    min-width: 100vw;
 }
 
-.popupContainer {
-		position: relative;
-		width: 25em;
-		height: auto;
-		bottom: 10em;
-		background: rgba(255, 255, 255, 0.27);
-		backdrop-filter: blur(10px);
-}
-
-.forgot_password {
-		display: block;
-		margin: 20px 0 10px;
-		clear: both;
-		overflow: hidden;
-		text-decoration: none;
-}
 
 /* Popup Styles*/
-
-.popupHeader {
-		font-size: 16px;
-		text-transform: uppercase;
-}
-
-.popupHeader {
-		background: #F4F4F2;
-		position: relative;
-		padding: 10px 20px;
-		border-bottom: 1px solid #DDD;
-		font-weight: bold;
-}
-
-.popupHeader .modal_close {
-		position: absolute;
-		right: 0;
-		top: 0;
-		padding: 10px 15px;
-		background: #E4E4E2;
-		cursor: pointer;
-		color: #aaa;
-		font-size: 16px;
+.popupContainer {
+    position: relative;
+    width: 25em;
+    height: auto;
+    bottom: 10em;
+    background: rgba(255, 255, 255, 0.27);
+    backdrop-filter: blur(10px);
 }
 
 .popupBody {
-		padding: 20px;
+    padding: 20px;
 }
+
 /* Social Login Form */
 
 .social_login .social_box {
-		display: block;
-		clear: both;
-		padding: 10px;
-		margin-bottom: 10px;
-		background: #F4F4F2;
-		overflow: hidden;
+    display: block;
+    clear: both;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #F4F4F2;
+    overflow: hidden;
 }
 
 .social_login .icon {
-		display: block;
-		padding: 5px 10px;
-		margin-right: 10px;
-		float: left;
-		color: #FFF;
-		font-size: 16px;
-		text-align: center;
+    display: block;
+    padding: 5px 10px;
+    margin-right: 10px;
+    float: left;
+    color: #FFF;
+    font-size: 16px;
+    text-align: center;
 }
 
 .social_login .google .icon {
-		background: #DD4B39;
+    background: #DD4B39;
 }
 
 .social_login .icon_title {
-		display: block;
-		padding: 5px 0;
-		float: left;
-		font-weight: bold;
-		font-size: 16px;
-		color: #777;
+    display: block;
+    padding: 5px 0;
+    float: left;
+    font-weight: bold;
+    font-size: 16px;
+    color: #777;
 }
 
 .social_login .social_box:hover {
-		background: #E4E4E2;
+    background: #E4E4E2;
+}
+
+.forgot_password {
+    display: block;
+    margin: 20px 0 10px;
+    clear: both;
+    overflow: hidden;
+    text-decoration: none;
 }
 
 .centeredText {
-		text-align: center;
-		margin: 20px 0;
-		clear: both;
-		overflow: hidden;
-		text-transform: uppercase;
+    text-align: center;
+    margin: 20px 0;
+    clear: both;
+    overflow: hidden;
+    text-transform: uppercase;
 }
 
 .row {
-		clear: both;
-		overflow: hidden;
+    clear: both;
+    overflow: hidden;
 }
 
 .row a {
-		display: block;
+    display: block;
 }
+
 /* User Login Form */
 
 .user_login {
-		display: none;
+    display: none;
 }
 
 .user_login label {
-		display: block;
-		margin-bottom: 5px;
+    display: block;
+    margin-bottom: 5px;
 }
 
 .user_login input[type="checkbox"] {
-		float: left;
-		margin-right: 5px;
+    float: left;
+    margin-right: 5px;
 }
 
-.user_login input[type="checkbox"]+label {
-		float: left;
+.user_login input[type="checkbox"] + label {
+    float: left;
 }
 
 .user_login .checkbox {
-		margin-bottom: 10px;
-		clear: both;
-		overflow: hidden;
+    margin-bottom: 10px;
+    clear: both;
+    overflow: hidden;
 }
 
 
 /* User Register Form */
 
 .user_register {
-		display: none;
+    display: none;
 }
 
 .user_register label {
-		display: block;
-		margin-bottom: 5px;
+    display: block;
+    margin-bottom: 5px;
 }
 
 .user_register input[type="checkbox"] {
-		float: left;
-		margin-right: 5px;
+    float: left;
+    margin-right: 5px;
 }
 
-.user_register input[type="checkbox"]+label {
-		float: left;
+.user_register input[type="checkbox"] + label {
+    float: left;
 }
 
 .user_register .checkbox {
-		margin-bottom: 10px;
-		clear: both;
-		overflow: hidden;
+    margin-bottom: 10px;
+    clear: both;
+    overflow: hidden;
 }
 
 .form-control {
-	background-color: #ffffff87;
-	transition: border-color .25s ease-in-out,box-shadow .25s ease-in-out;
+    background-color: #ffffff87;
+    transition: border-color .25s ease-in-out, box-shadow .25s ease-in-out;
 }
 
 #article-url {
-	background-color: rgba(255, 255, 255, 0);
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .btn-outline-primary {
-  --bs-btn-color: rgba(13, 110, 253, 0.80);;
-  --bs-btn-border-color: rgba(13, 110, 253, 0.75);;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgba(13, 110, 253, 0.75);
-  --bs-btn-hover-border-color: rgba(13, 110, 253, 0);
-  --bs-btn-focus-shadow-rgb: 13,110,253;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #0d6efd;
-  --bs-btn-active-border-color: rgba(13, 110, 253, 0.80);
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: rgba(13, 110, 253, 0.80);;
-  --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: rgba(13, 110, 253, 0.75);;
-  --bs-gradient: none;}
+    --bs-btn-color: rgba(13, 110, 253, 0.80);;
+    --bs-btn-border-color: rgba(13, 110, 253, 0.75);;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgba(13, 110, 253, 0.75);
+    --bs-btn-hover-border-color: rgba(13, 110, 253, 0);
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #0d6efd;
+    --bs-btn-active-border-color: rgba(13, 110, 253, 0.80);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: rgba(13, 110, 253, 0.80);;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: rgba(13, 110, 253, 0.75);;
+    --bs-gradient: none;
+}
 
 .btn-outline-secondary {
-  --bs-btn-color: rgba(108, 117, 125, 0.8);
-  --bs-btn-border-color: #6c757d;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgba(108, 117, 125, 0.8);
-  --bs-btn-hover-border-color: rgba(108, 117, 125, 0);
-  --bs-btn-focus-shadow-rgb: 108,117,125;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgba(108, 117, 125, 0.8);
-  --bs-btn-active-border-color: #6c757d;
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #6c757d;
-  --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: #6c757d;
-  --bs-gradient: none;
+    --bs-btn-color: rgba(108, 117, 125, 0.8);
+    --bs-btn-border-color: #6c757d;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgba(108, 117, 125, 0.8);
+    --bs-btn-hover-border-color: rgba(108, 117, 125, 0);
+    --bs-btn-focus-shadow-rgb: 108, 117, 125;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: rgba(108, 117, 125, 0.8);
+    --bs-btn-active-border-color: #6c757d;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #6c757d;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #6c757d;
+    --bs-gradient: none;
+}
+
+.offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl {
+    --bs-offcanvas-width: auto;
+    --bs-offcanvas-height: auto;
+    --bs-offcanvas-padding-x: auto;
+    --bs-offcanvas-padding-y: auto;
+    --bs-offcanvas-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --bs-offcanvas-transition: transform 0.3s ease-in-out;
+    --bs-offcanvas-title-line-height: 1.5;
+}
+
+#saved-vocabulary {
+    display: none;
 }
