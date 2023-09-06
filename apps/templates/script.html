@@ -29,28 +29,30 @@
                 "url": articleUrl
             };
 
-            // show the loader element
-            loaderLine.style.visibility = "visible";
+            if (articleUrl !== '') {
+                // show the loader element
+                loaderLine.style.visibility = "visible";
 
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "{% url 'articles' %}", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log("Article URL sent successfully!");
-                        document.getElementById("article-url").value = '';
-                        location.reload();
-                    } else {
-                        console.error("Error sending article URL:", xhr.statusText);
-                        document.getElementById("article-url").value = '';
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "{% url 'articles' %}", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            console.log("Article URL sent successfully!");
+                            document.getElementById("article-url").value = '';
+                            location.reload();
+                        } else {
+                            console.error("Error sending article URL:", xhr.statusText);
+                            document.getElementById("article-url").value = '';
+                        }
+                        loaderLine.style.visibility = "hidden";
                     }
-                    loaderLine.style.visibility = "hidden";
-                }
-            };
+                };
 
-            xhr.send(JSON.stringify(jsonData));
+                xhr.send(JSON.stringify(jsonData));
+            }
         });
     });
 
@@ -81,13 +83,38 @@
             const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
 
             iframeContent.addEventListener("mouseup", function () {
-                const selectedText = iframeContent.getSelection().toString();
+                const selectedText = iframeContent.getSelection().toString().trim();
 
-                if (selectedText.trim() !== "") {
-                    console.log("Selected Text:", selectedText);
+                if (selectedText !== "") {
+                    // Send the selected text to the translation endpoint
+                    translateSelectedText(selectedText);
                 }
             });
         });
+
+        function translateSelectedText(text) {
+            const translationData = {
+                word: text
+            };
+
+            fetch('/api/v1/dictionary/translate/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify(translationData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Log the original text and the translation
+                    console.log("Original Text:", text);
+                    console.log("Translation:", data.translation);
+                })
+                .catch(error => {
+                    console.error('Error during translation:', error);
+                });
+        }
     });
 
     // Function to handle the logout process
