@@ -19,6 +19,8 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from rest_framework.response import Response
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import ModelBackend
 
 
 def url_valid(url):
@@ -32,9 +34,15 @@ def url_valid(url):
 
 class ArticleView(View):
     def get(self, request):
-        articles = Article.objects.order_by("date_added")
-        last_article = Article.objects.order_by("date_added").last()
-        return render(request, "home.html", {"articles": articles, "user": request.user, "article": last_article.data})
+        if request.user.is_authenticated:
+            articles = Article.objects.filter(user=request.user).order_by("date_added")
+            if articles is not None:
+                last_article = articles.last()
+                return render(
+                    request, "home.html", {"articles": articles, "user": request.user, "article": last_article.data}
+                )
+            return render(request, "home.html", {"articles": articles, "user": request.user})
+        return render(request, "home.html")
 
 
 # --- Auth --- #
@@ -63,29 +71,35 @@ class LoginAPIView(APIView):
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
-                "username": openapi.Schema(type=openapi.TYPE_STRING),
+                "username_or_email": openapi.Schema(type=openapi.TYPE_STRING),
                 "password": openapi.Schema(type=openapi.TYPE_STRING),
             },
-            required=["username", "password"],
+            required=["username_or_email", "password"],
         )
     )
     def post(self, request):
-        username = request.data.get("username")
+        username_or_email = request.data.get("username_or_email")
         password = request.data.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            refresh = RefreshToken.for_user(user)
-            response_data = {
-                "status": "success",
-                "message": "Login successful.",
-                "data": {
-                    "refresh": str(refresh),
-                    "access": str(refresh.access_token),
-                },
-            }
-            return Response(response_data, status=status.HTTP_200_OK)
-        return Response({"error": "Invalid username or password."}, status=status.HTTP_400_BAD_REQUEST)
+        if username_or_email is not None:
+            # Check if the provided username_or_email contains "@" to determine if it's an email
+            if "@" in username_or_email:
+                user = authenticate(request, email=username_or_email, password=password)
+            else:
+                user = authenticate(request, username=username_or_email, password=password)
+
+            if user is not None:
+                login(request, user)
+                refresh = RefreshToken.for_user(user)
+                response_data = {
+                    "status": "success",
+                    "message": "Login successful.",
+                    "data": {
+                        "refresh": str(refresh),
+                        "access": str(refresh.access_token),
+                    },
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
+            return Response({"error": "Invalid username or email or password."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogoutAPIView(APIView):
@@ -289,3 +303,21 @@ class DetailedDictionaryView(APIView):
         dictionary = Dictionary.objects.get(pk=pk, user=request.user)
         dictionary.user.remove(request.user)
         return Response({"message": f"Word '{dictionary.word}' removed successfully."})
+
+
+class CustomBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        User = get_user_model()
+        try:
+            # Try to find the user by username
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            # If the user is not found by username, try to find them by email
+            try:
+                user = User.objects.get(email=username)
+            except User.DoesNotExist:
+                return None  # User not found, authentication fails
+
+        # Check the password
+        if user.check_password(password):
+            return user  # Authentication successful
