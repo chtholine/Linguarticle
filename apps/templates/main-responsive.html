@@ -1,0 +1,122 @@
+<main>
+    <nav class="navbar bg-light fixed-top">
+        <div class="container-fluid">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                    aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">Linguarticle</a>
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                 aria-labelledby="offcanvasNavbarLabel" style="background: none">
+                <div class="offcanvas-body">
+                    <div class="d-flex flex-column flex-shrink-0 p-3"
+                         style="width: 280px; min-height: 100vh; background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);">
+                        <div class="nav row" style="display: flex; gap: 1em; margin-bottom: 1em">
+                            <button id="articles-btn" type="button" class="btn btn-outline-secondary col">Articles
+                            </button>
+                            <button id="vocabulary-btn" type="button" class="btn btn-outline-secondary col">Vocabulary
+                            </button>
+                        </div>
+                        <div id="saved-articles">
+                            <ul class="nav flex-column sticky-top d-flex align-items-center"
+                                data-bs-theme="dark">
+                                <li class="nav-item">
+                                    <label>
+                                        <form id="article-form">
+                                            <input id="article-url" class="form-control me-2" type="search"
+                                                   name="article_url"
+                                                   placeholder="Article URL">
+                                            <div class="loader-line"></div>
+                                        </form>
+                                    </label>
+                                </li>
+                            </ul>
+                            <hr>
+                            <div class="scrollable-nav">
+                                <ul class="nav nav-pills flex-column mb-auto">
+                                    {% for article in articles reversed %}
+                                        <li class="nav-item pb-3">
+                                            <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
+                                                    type="button"
+                                                    data-article-id="{{ article.id }}">{{ article.title }}</button>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="saved-vocabulary">
+                            <ul class="nav flex-column sticky-top d-flex align-items-center"
+                                data-bs-theme="dark">
+                                <li class="nav-item">
+                                    <label>
+                                        <form id="article-form">
+                                            <input id="article-url" class="form-control me-2" type="search"
+                                                   name="article_url"
+                                                   placeholder="Search">
+                                            <div class="loader-line"></div>
+                                        </form>
+                                    </label>
+                                </li>
+                            </ul>
+                            <hr>
+                            <div class="scrollable-nav">
+                                <ul class="nav nav-pills flex-column mb-auto">
+                                    {% for word in words %}
+                                        <li class="nav-item pb-3">
+                                            <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
+                                                    type="button"
+                                                    data-article-id="{{ word.id }}">{{ word }}</button>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="account-dropup">
+                            <hr>
+                            <div class="dropup" style="">
+                                <a href="#"
+                                   class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src=" https://preview.redd.it/ucezbnobnj271.png?width=568&format=png&auto=webp&s=07ac708a7b657dae6440b120dc6f9eef45cf62e0"
+                                         alt="" class="rounded-circle me-2" width="40em" height="40em"
+                                         style="background: aliceblue">
+                                    <strong style="font-size: 1rem; color: #666666">{{ user }}</strong>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-light text-small shadow">
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" id="logout-link">Log out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ last_article.data }}" style="border: none;"></iframe>
+</main>
+<script>
+    // jQuery animation
+    $(function () {
+        // Calling Login Form
+        $("#vocabulary-btn").click(function () {
+            $("#saved-articles").fadeOut(300, function () {
+                $("#saved-vocabulary").fadeIn(300);
+            });
+            return false;
+        });
+
+        // Calling Register Form
+        $("#articles-btn").click(function () {
+            $("#saved-vocabulary").fadeOut(300, function () {
+                $("#saved-articles").fadeIn(300);
+            });
+            return false;
+        });
+    });
+</script>
