@@ -1,6 +1,7 @@
 <main>
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; max-height: 100vh">
-        <ul class="nav flex-column bg-dark sticky-top d-flex align-items-center mb-3 mb-md-0 me-md-auto"
+    <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px; max-height: 100vh; background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);">
+        <ul class="nav flex-column bg-dark sticky-top d-flex align-items-center"
             data-bs-theme="dark">
             <li class="nav-item">
                 <label>
@@ -13,7 +14,7 @@
             </li>
         </ul>
         <hr>
-        <div class="scrollable-nav" style="min-height: 83%">
+        <div class="scrollable-nav">
             <ul class="nav nav-pills flex-column mb-auto">
                 {% for article in articles reversed %}
                     <li class="nav-item pb-3">
@@ -25,7 +26,7 @@
         </div>
         <div>
             <hr>
-            <div class="dropdown">
+            <div class="dropup">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <img src=" https://preview.redd.it/ucezbnobnj271.png?width=568&format=png&auto=webp&s=07ac708a7b657dae6440b120dc6f9eef45cf62e0"
@@ -42,5 +43,5 @@
             </div>
         </div>
     </div>
-    <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ article }}" style="border: none;"></iframe>
+    <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ last_article }}" style="border: none;"></iframe>
 </main>
