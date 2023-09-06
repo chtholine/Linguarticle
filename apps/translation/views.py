@@ -39,10 +39,10 @@ class ArticleView(View):
             if articles is not None:
                 last_article = articles.last()
                 return render(
-                    request, "home.html", {"articles": articles, "user": request.user, "article": last_article.data}
+                    request, "index.html", {"articles": articles, "user": request.user, "article": last_article.data}
                 )
-            return render(request, "home.html", {"articles": articles, "user": request.user})
-        return render(request, "home.html")
+            return render(request, "index.html", {"articles": articles, "user": request.user})
+        return render(request, "index.html")
 
 
 # --- Auth --- #
