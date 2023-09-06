@@ -141,8 +141,6 @@ h1 {
 }
 /* Social Login Form */
 
-.social_login {}
-
 .social_login .social_box {
 		display: block;
 		clear: both;
@@ -251,6 +249,10 @@ h1 {
 .form-control {
 	background-color: #ffffff87;
 	transition: border-color .25s ease-in-out,box-shadow .25s ease-in-out;
+}
+
+#article-url {
+	background-color: rgba(255, 255, 255, 0);
 }
 
 .btn-outline-primary {
