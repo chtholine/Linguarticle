@@ -1,12 +1,12 @@
 <main>
     <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px; max-height: 100vh; background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);">
-        <ul class="nav flex-column bg-dark sticky-top d-flex align-items-center"
+        <ul class="nav sticky-top align-items-center"
             data-bs-theme="dark">
             <li class="nav-item">
                 <label>
                     <form id="article-form">
-                        <input id="article-url" class="form-control me-2" type="search" name="article_url"
+                        <input id="article-url" class="form-control me-4" type="search" name="article_url"
                                placeholder="Article URL">
                         <div class="loader-line"></div>
                     </form>
@@ -43,5 +43,5 @@
             </div>
         </div>
     </div>
-    <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ last_article }}" style="border: none;"></iframe>
+    <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ last_article.data }}" style="border: none;"></iframe>
 </main>
