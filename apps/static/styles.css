@@ -267,11 +267,23 @@ h1 {
     --bs-offcanvas-height: auto;
     --bs-offcanvas-padding-x: auto;
     --bs-offcanvas-padding-y: auto;
-    --bs-offcanvas-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --bs-offcanvas-box-shadow: 0 0.125rem 0.20rem rgba(0, 0, 0, 0.075);
     --bs-offcanvas-transition: transform 0.3s ease-in-out;
     --bs-offcanvas-title-line-height: 1.5;
 }
 
-#saved-vocabulary {
+.form-control {
+
+}
+
+[data-bs-theme="dark"] {
+    --bs-secondary-color: #6c757d
+}
+
+.saved-vocabulary {
     display: none;
+}
+
+.offcanvas-backdrop.show {
+    opacity: 0.25;
 }
