@@ -267,4 +267,85 @@
             });
         }
     });
+
+    // word search
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("search-input");
+        const wordList = document.getElementById("word-list");
+
+        searchInput.addEventListener("input", function () {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            // Get all li elements with the class "li-word-button"
+            const wordLiElements = wordList.querySelectorAll(".li-word-button");
+
+            // Loop through the li elements and hide/show based on the search term
+            wordLiElements.forEach(function (li) {
+                const button = li.querySelector(".word-button");
+                const word = button.textContent.toLowerCase();
+                if (word.includes(searchTerm)) {
+                    $(li).fadeIn(300);// Show matching words
+                } else {
+                    $(li).fadeOut(300); // Hide non-matching words
+                }
+            });
+        });
+    });
+
+
+    // jQuery animation for nav
+    $(function () {
+        // Calling Login Form
+        $("#vocabulary-btn").click(function () {
+            $(".saved-articles").fadeOut(300, function () {
+                $(".saved-vocabulary").fadeIn(300);
+            });
+            return false;
+        });
+
+        // Calling Register Form
+        $("#articles-btn").click(function () {
+            $(".saved-vocabulary").fadeOut(300, function () {
+                $(".saved-articles").fadeIn(300);
+            });
+            return false;
+        });
+    });
+
+    // jQuery animation for auth
+    $(function () {
+        // Calling Login Form
+        $("#login_form").click(function () {
+            $(".social_login").fadeOut(300, function () {
+                $(".user_login").fadeIn(300);
+            });
+            return false;
+        });
+
+        // Calling Register Form
+        $("#register_form").click(function () {
+            $(".social_login").fadeOut(300, function () {
+                $(".user_register").fadeIn(300);
+                $(".header_title").text('Register');
+            });
+            return false;
+        });
+
+        // Going back to Social Forms
+        $(".login-back").click(function () {
+            $(".user_login").fadeOut(300, function () {
+                $(".social_login").fadeIn(300);
+                $(".header_title").text('Login');
+            });
+            return false;
+        });
+
+        $(".register-back").click(function () {
+            $(".user_register").fadeOut(300, function () {
+                $(".social_login").fadeIn(300);
+                $(".header_title").text('Login');
+            });
+            return false;
+        });
+    });
 </script>
