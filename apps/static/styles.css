@@ -94,7 +94,7 @@ h1 {
     position: relative;
     width: 25em;
     height: auto;
-    bottom: 10em;
+    bottom: 5rem;
     background: rgba(255, 255, 255, 0.27);
     backdrop-filter: blur(10px);
 }
