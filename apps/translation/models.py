@@ -18,10 +18,8 @@ class Dictionary(models.Model):
 class Article(models.Model):
     user = models.ManyToManyField(User, related_name="articles")
     url = models.URLField(unique=True)
-    author = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     data = models.TextField()
-    translation = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
