@@ -43,23 +43,24 @@
                                 console.log("Article URL sent successfully!");
                                 document.getElementById("article-url").value = '';
                                 setTimeout(function () {
+                                    document.getElementById("article-url").value = '';
+                                    loaderLine.style.visibility = "hidden";
                                     location.reload();
                                 }, 3000);
                             } else if (xhr.status === 201) {
                                 console.log("Existing Article is successfully added!");
-                                document.getElementById("article-url").value = '';
                                 setTimeout(function () {
+                                    document.getElementById("article-url").value = '';
+                                    loaderLine.style.visibility = "hidden";
                                     location.reload();
-                                }, 300);
+                                }, 1000);
                             } else {
                                 console.error("Error sending article URL:", xhr.statusText);
                                 document.getElementById("article-url").value = '';
                             }
-                            loaderLine.style.visibility = "hidden";
                         }
                     }
                     ;
-
                     xhr.send(JSON.stringify(jsonData));
                 }
             }
