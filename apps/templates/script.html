@@ -21,39 +21,50 @@
         const loaderLine = document.querySelector(".loader-line");
 
         form.addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent default form submission behavior
+                event.preventDefault(); // Prevent default form submission behavior
 
-            const articleUrl = document.getElementById("article-url").value; // Get the value from the input field
+                const articleUrl = document.getElementById("article-url").value; // Get the value from the input field
 
-            const jsonData = {
-                "url": articleUrl
-            };
-
-            if (articleUrl !== '') {
-                // show the loader element
-                loaderLine.style.visibility = "visible";
-
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", "{% url 'articles' %}", true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            console.log("Article URL sent successfully!");
-                            document.getElementById("article-url").value = '';
-                            location.reload();
-                        } else {
-                            console.error("Error sending article URL:", xhr.statusText);
-                            document.getElementById("article-url").value = '';
-                        }
-                        loaderLine.style.visibility = "hidden";
-                    }
+                const jsonData = {
+                    "url": articleUrl
                 };
 
-                xhr.send(JSON.stringify(jsonData));
+                if (articleUrl !== '') {
+                    // show the loader element
+                    loaderLine.style.visibility = "visible";
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", "{% url 'articles' %}", true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                console.log("Article URL sent successfully!");
+                                document.getElementById("article-url").value = '';
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 3000);
+                            } else if (xhr.status === 201) {
+                                console.log("Existing Article is successfully added!");
+                                document.getElementById("article-url").value = '';
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 300);
+                            } else {
+                                console.error("Error sending article URL:", xhr.statusText);
+                                document.getElementById("article-url").value = '';
+                            }
+                            loaderLine.style.visibility = "hidden";
+                        }
+                    }
+                    ;
+
+                    xhr.send(JSON.stringify(jsonData));
+                }
             }
-        });
+        )
+        ;
     });
 
 
