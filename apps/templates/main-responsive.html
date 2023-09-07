@@ -53,7 +53,7 @@
                         <div class="scrollable-nav saved-articles">
                             <ul class="nav nav-pills flex-column mb-auto">
                                 {% for article in articles reversed %}
-                                    <li class="nav-item pb-3">
+                                    <li class="nav-item pb-3 li-article-button">
                                         <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
                                                 type="button"
                                                 data-article-id="{{ article.id }}">{{ article.title }}</button>
@@ -68,8 +68,8 @@
                             <li class="nav-item">
                                 <label>
                                     <form id="article-form">
-                                        <input id="article-url" class="form-control me-4" type="search"
-                                               name="article_url"
+                                        <input id="search-input" class="form-control me-4" type="search"
+                                               name="search"
                                                placeholder="Search">
                                         <div class="loader-line"></div>
                                     </form>
@@ -77,17 +77,18 @@
                             </li>
                         </ul>
                         <hr class="saved-vocabulary">
-                        <div class="scrollable-nav saved-vocabulary">
+                        <div class="scrollable-nav saved-vocabulary" id="word-list">
                             <ul class="nav nav-pills flex-column mb-auto">
                                 {% for word in words %}
-                                    <li class="nav-item pb-3">
-                                        <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
+                                    <li class="nav-item pb-3 li-word-button">
+                                        <button class="word-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
                                                 type="button"
                                                 data-article-id="{{ word.id }}">{{ word }}</button>
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
+
                         <div id="account-dropup">
                             <hr>
                             <div class="dropup">
@@ -116,23 +117,3 @@
     </nav>
     <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ last_article.data }}" style="border: none;"></iframe>
 </main>
-<script>
-    // jQuery animation
-    $(function () {
-        // Calling Login Form
-        $("#vocabulary-btn").click(function () {
-            $(".saved-articles").fadeOut(300, function () {
-                $(".saved-vocabulary").fadeIn(300);
-            });
-            return false;
-        });
-
-        // Calling Register Form
-        $("#articles-btn").click(function () {
-            $(".saved-vocabulary").fadeOut(300, function () {
-                $(".saved-articles").fadeIn(300);
-            });
-            return false;
-        });
-    });
-</script>
