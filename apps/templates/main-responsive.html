@@ -6,26 +6,41 @@
                     aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <button type="button" class="btn btn-secondary"
+                    data-bs-toggle="popover" data-bs-placement="right"
+                    data-bs-custom-class="custom-popover"
+                    data-bs-title="Satish Kumar sits in front of his submerged rice paddy in India’s Haryana state, looking despairingly at his ruined crops."
+                    data-bs-content="Сатіш Кумар сидить перед своїм затопленим рисовим полем в індійському штаті Хар’яна, з відчаєм дивлячись на свої знищені посіви.">
+                Custom popover
+            </button>
+            <script>
+                const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+                const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+            </script>
             <a class="navbar-brand" href="#">Linguarticle</a>
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                  aria-labelledby="offcanvasNavbarLabel" style="background: none">
-                <div class="offcanvas-body">
+                <div class="offcanvas-body" style="display: flex;">
                     <div class="d-flex flex-column flex-shrink-0 p-3"
-                         style="width: 280px; min-height: 100vh; background: rgba(255, 255, 255, 0.7);
+                         style="width: 280px; max-height: 100vh; background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);">
-                        <div class="nav row" style="display: flex; gap: 1em; margin-bottom: 1em">
-                            <button id="articles-btn" type="button" class="btn btn-outline-secondary col">Articles
-                            </button>
-                            <button id="vocabulary-btn" type="button" class="btn btn-outline-secondary col">Vocabulary
-                            </button>
-                        </div>
-                        <div id="saved-articles">
-                            <ul class="nav flex-column sticky-top d-flex align-items-center"
+                        <div>
+                            <div class="nav row sticky-top"
+                                 style="display: flex; gap: 1em; margin-bottom: 1em; position: sticky">
+                                <button id="articles-btn" type="button" class="btn btn-outline-secondary col">Articles
+                                </button>
+                                <button id="vocabulary-btn" type="button" class="btn btn-outline-secondary col">
+                                    Vocabulary
+                                </button>
+                            </div>
+
+                            {# saved articles #}
+                            <ul class="nav sticky-top saved-articles"
                                 data-bs-theme="dark">
                                 <li class="nav-item">
                                     <label>
                                         <form id="article-form">
-                                            <input id="article-url" class="form-control me-2" type="search"
+                                            <input id="article-url" class="form-control me-4" type="search"
                                                    name="article_url"
                                                    placeholder="Article URL">
                                             <div class="loader-line"></div>
@@ -33,49 +48,49 @@
                                     </label>
                                 </li>
                             </ul>
-                            <hr>
-                            <div class="scrollable-nav">
-                                <ul class="nav nav-pills flex-column mb-auto">
-                                    {% for article in articles reversed %}
-                                        <li class="nav-item pb-3">
-                                            <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
-                                                    type="button"
-                                                    data-article-id="{{ article.id }}">{{ article.title }}</button>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
                         </div>
-                        <div id="saved-vocabulary">
-                            <ul class="nav flex-column sticky-top d-flex align-items-center"
-                                data-bs-theme="dark">
-                                <li class="nav-item">
-                                    <label>
-                                        <form id="article-form">
-                                            <input id="article-url" class="form-control me-2" type="search"
-                                                   name="article_url"
-                                                   placeholder="Search">
-                                            <div class="loader-line"></div>
-                                        </form>
-                                    </label>
-                                </li>
+                        <hr class="saved-articles">
+                        <div class="scrollable-nav saved-articles">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                {% for article in articles reversed %}
+                                    <li class="nav-item pb-3">
+                                        <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
+                                                type="button"
+                                                data-article-id="{{ article.id }}">{{ article.title }}</button>
+                                    </li>
+                                {% endfor %}
                             </ul>
-                            <hr>
-                            <div class="scrollable-nav">
-                                <ul class="nav nav-pills flex-column mb-auto">
-                                    {% for word in words %}
-                                        <li class="nav-item pb-3">
-                                            <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
-                                                    type="button"
-                                                    data-article-id="{{ word.id }}">{{ word }}</button>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                        </div>
+
+                        {# saved words #}
+                        <ul class="nav sticky-top saved-vocabulary"
+                            data-bs-theme="dark">
+                            <li class="nav-item">
+                                <label>
+                                    <form id="article-form">
+                                        <input id="article-url" class="form-control me-4" type="search"
+                                               name="article_url"
+                                               placeholder="Search">
+                                        <div class="loader-line"></div>
+                                    </form>
+                                </label>
+                            </li>
+                        </ul>
+                        <hr class="saved-vocabulary">
+                        <div class="scrollable-nav saved-vocabulary">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                {% for word in words %}
+                                    <li class="nav-item pb-3">
+                                        <button class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4"
+                                                type="button"
+                                                data-article-id="{{ word.id }}">{{ word }}</button>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
                         <div id="account-dropup">
                             <hr>
-                            <div class="dropup" style="">
+                            <div class="dropup">
                                 <a href="#"
                                    class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                                    data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,6 +108,7 @@
                                 </ul>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -105,16 +121,16 @@
     $(function () {
         // Calling Login Form
         $("#vocabulary-btn").click(function () {
-            $("#saved-articles").fadeOut(300, function () {
-                $("#saved-vocabulary").fadeIn(300);
+            $(".saved-articles").fadeOut(300, function () {
+                $(".saved-vocabulary").fadeIn(300);
             });
             return false;
         });
 
         // Calling Register Form
         $("#articles-btn").click(function () {
-            $("#saved-vocabulary").fadeOut(300, function () {
-                $("#saved-articles").fadeIn(300);
+            $(".saved-vocabulary").fadeOut(300, function () {
+                $(".saved-articles").fadeIn(300);
             });
             return false;
         });
