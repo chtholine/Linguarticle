@@ -80,7 +80,7 @@ h1 {
     margin-top: 60px;
 }
 
-.container {
+#auth {
     background-image: url("https://cutewallpaper.org/21/background-gif-1920x1080/Pin-on-nim-gif.gif");
     display: grid;
     place-content: center;
