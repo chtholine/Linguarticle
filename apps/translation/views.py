@@ -191,7 +191,7 @@ class ArticlesView(APIView):
             article = Article.objects.get(url=canonical_url)
             article.user.add(request.user)
             article.save()
-            return Response({"error": "Existing article is added to the user."}, status=400)
+            return Response({"message": "Existing article is added to the user."}, status=201)
 
         # add scrapy dir to python path
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
