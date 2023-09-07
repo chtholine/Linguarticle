@@ -31,7 +31,6 @@ class ArticleSpider(scrapy.Spider):
         user_id = response.meta["user_id"]
         item = ArticleItem()
         title = response.xpath("//h1/text() | //h1/strong/text()").get().strip()
-        # exclude_xpath = "//div[@id='root']//descendant-or-self::*"
         html_content = response.body
 
         item["url"] = self.url
