@@ -277,11 +277,12 @@ h1 {
 }
 
 .form-control {
-
+ color: #6c757d
 }
 
 [data-bs-theme="dark"] {
-    --bs-secondary-color: #6c757d
+    --bs-secondary-color: #6c757d;
+    --bs-body-color: #6c757d;
 }
 
 .saved-vocabulary {
