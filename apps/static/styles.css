@@ -228,6 +228,10 @@ h1 {
     background-color: rgba(255, 255, 255, 0);
 }
 
+#search-input {
+    background-color: rgba(255, 255, 255, 0);
+}
+
 .btn-outline-primary {
     --bs-btn-color: rgba(13, 110, 253, 0.80);;
     --bs-btn-border-color: rgba(13, 110, 253, 0.75);;
