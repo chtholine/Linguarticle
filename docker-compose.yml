@@ -39,13 +39,26 @@ services:
       - local_dev
 
   nginx:
+    image: nginx:latest
     build: ./docker/nginx
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
       - static_volume:/wd/staticfiles:rw
       - media_volume:/wd/apps/media:rw
-    ports:
-      - "8080:8080"
+      - ./docker/nginx/:/etc/nginx/conf.d/
+      - ./docker/certbot/conf:/etc/letsencrypt
+      - ./docker/certbot/www:/var/www/certbot
     depends_on:
       - app
     profiles:
       - full_dev
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./docker/certbot/conf:/etc/letsencrypt
+      - ./docker/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
