@@ -36,6 +36,12 @@ if DEBUG:
 
 CSRF_TRUSTED_ORIGINS = env.list("CSRF__TRUSTED_ORIGINS")
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+SECURE_SSL_REDIRECT = True
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -51,6 +57,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "scrapy",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -61,6 +68,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
