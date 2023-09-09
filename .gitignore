@@ -5,6 +5,7 @@
 /scraper/twistd.pid
 /scraper/logs/
 /scraper/dbs/
+/docker/certbot/
 
 media/*
 !media/.gitkeep
