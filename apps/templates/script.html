@@ -1,3 +1,4 @@
+{% csrf_token %}
 <script>
     // cookies
     function getCookie(name) {
@@ -6,6 +7,7 @@
             const cookies = document.cookie.split(';');
             for (let i = 0; i < cookies.length; i++) {
                 const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
@@ -14,6 +16,8 @@
         }
         return cookieValue;
     }
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     // loading line
     document.addEventListener("DOMContentLoaded", function () {
@@ -36,7 +40,7 @@
                     const xhr = new XMLHttpRequest();
                     xhr.open("POST", "{% url 'articles' %}", true);
                     xhr.setRequestHeader("Content-Type", "application/json");
-                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === XMLHttpRequest.DONE) {
                             if (xhr.status === 200) {
@@ -79,7 +83,14 @@
                 const articleId = button.getAttribute("data-article-id");
 
                 // Fetch the article content using AJAX
-                fetch(`/api/v1/articles/${articleId}/`) // Replace with your API endpoint
+                fetch(`/api/v1/articles/${articleId}/`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    mode: 'same-origin',
+                })
                     .then(response => response.json())
                     .then(content => {
                         // Set the iframe's srcdoc attribute to the fetched content
@@ -113,8 +124,9 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-CSRFToken': csrftoken,
                 },
+                mode: 'same-origin',
                 body: JSON.stringify(translationData)
             })
                 .then(response => response.json())
@@ -131,14 +143,13 @@
 
     // Function to handle the logout process
     function logout() {
-        // Send an AJAX request to log the user out
         fetch('/api/v1/logout/', {
-            method: 'POST', // or 'GET' if your logout endpoint supports GET requests
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-                // Add any other required headers here
+                'X-CSRFToken': csrftoken,
             },
+            mode: 'same-origin',
         })
             .then(response => {
                 if (response.status === 200) {
@@ -185,8 +196,9 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
+                'X-CSRFToken': csrftoken,
             },
+            mode: 'same-origin',
             body: JSON.stringify(loginData)
         })
             .then(response => {
@@ -224,8 +236,9 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
+                'X-CSRFToken': csrftoken,
             },
+            mode: 'same-origin',
             body: JSON.stringify(registrationData)
         })
             .then(response => {
