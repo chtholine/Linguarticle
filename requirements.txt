@@ -21,3 +21,4 @@ nltk~=3.8.1
 requests==2.31.0
 deep_translator==1.11.4
 Twisted==22.10.0
+django-cors-headers==4.2.0
