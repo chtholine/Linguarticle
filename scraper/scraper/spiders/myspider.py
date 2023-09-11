@@ -1,9 +1,8 @@
-import re
-from typing import NamedTuple
+import scrapy
 from scrapy import Request
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule
-import scrapy
+
 from ..items import ArticleItem
 
 
