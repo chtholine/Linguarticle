@@ -1,26 +1,29 @@
 import os
-import nltk
-from deep_translator import GoogleTranslator
 import subprocess
-from django.views import View
-from drf_yasg import openapi
+
 import requests
 from bs4 import BeautifulSoup
-from drf_yasg.utils import swagger_auto_schema
-from nltk import word_tokenize
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import authenticate, login, logout
-from .serializers import UserSerializer, DictionarySerializer, ArticleUpdateSerializer
-from rest_framework.views import APIView
-from rest_framework import status, permissions
-from .models import Article, Dictionary
-from .serializers import ArticleSerializer
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
-from rest_framework.response import Response
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import get_user_model
+from deep_translator import GoogleTranslator
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.backends import ModelBackend
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
+from django.shortcuts import get_object_or_404, render
+from django.views import View
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import permissions, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from .models import Article, Dictionary
+from .serializers import (
+    ArticleSerializer,
+    ArticleUpdateSerializer,
+    DictionarySerializer,
+    UserSerializer,
+)
 
 
 def url_valid(url):
@@ -42,7 +45,12 @@ class ArticleView(View):
         return render(
             request,
             "index.html",
-            {"articles": articles, "user": request.user, "words": dictionary, "last_article": last_article},
+            {
+                "articles": articles,
+                "user": request.user,
+                "words": dictionary,
+                "last_article": last_article,
+            },
         )
 
 
@@ -86,7 +94,9 @@ class LoginAPIView(APIView):
             if "@" in username_or_email:
                 user = authenticate(request, email=username_or_email, password=password)
             else:
-                user = authenticate(request, username=username_or_email, password=password)
+                user = authenticate(
+                    request, username=username_or_email, password=password
+                )
 
             if user is not None:
                 login(request, user)
@@ -100,7 +110,10 @@ class LoginAPIView(APIView):
                     },
                 }
                 return Response(response_data, status=status.HTTP_200_OK)
-            return Response({"error": "Invalid username or email or password."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Invalid username or email or password."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class LogoutAPIView(APIView):
@@ -121,7 +134,9 @@ class UpdateUsernameAPIView(APIView):
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "Username updated successfully."}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": "Username updated successfully."}, status=status.HTTP_200_OK
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -134,7 +149,9 @@ class UpdateEmailAPIView(APIView):
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "Email updated successfully."}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": "Email updated successfully."}, status=status.HTTP_200_OK
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -158,8 +175,12 @@ class UpdatePasswordAPIView(APIView):
         if user.check_password(old_password):
             user.set_password(new_password)
             user.save()
-            return Response({"message": "Password updated successfully."}, status=status.HTTP_200_OK)
-        return Response({"error": "Invalid old password."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "Password updated successfully."}, status=status.HTTP_200_OK
+            )
+        return Response(
+            {"error": "Invalid old password."}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 # -- Articles -- #
@@ -173,7 +194,9 @@ class ArticlesView(APIView):
 
     @swagger_auto_schema(
         request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT, properties={"url": openapi.Schema(type=openapi.TYPE_STRING)}, required=["url"]
+            type=openapi.TYPE_OBJECT,
+            properties={"url": openapi.Schema(type=openapi.TYPE_STRING)},
+            required=["url"],
         )
     )
     def post(self, request):
@@ -191,17 +214,23 @@ class ArticlesView(APIView):
             article = Article.objects.get(url=canonical_url)
             article.user.add(request.user)
             article.save()
-            return Response({"message": "Existing article is added to the user."}, status=201)
+            return Response(
+                {"message": "Existing article is added to the user."}, status=201
+            )
 
         # add scrapy dir to python path
-        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        base_dir = os.path.dirname(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        )
         scraper_dir = os.path.join(base_dir, "scraper")
         os.environ["PYTHONPATH"] = scraper_dir
         # os.environ["PYTHONPATH"] = "/home/chtholine/PycharmProjects/django_translation/scraper"
         # launch scrapy spider with subprocess
         spider_name = "article_spider"
         user_id = request.user.id
-        command = f"scrapy crawl {spider_name} -a url={canonical_url} -a user_id={user_id}"
+        command = (
+            f"scrapy crawl {spider_name} -a url={canonical_url} -a user_id={user_id}"
+        )
         try:
             subprocess.run(
                 command.split(), check=True, cwd=scraper_dir
@@ -216,7 +245,9 @@ class ArticlesView(APIView):
             # translated_content = "".join(translated_parts)
             # article.translation = translated_content
             # article.save()
-            return Response({"message": f"{spider_name} spider has parsed: {canonical_url}"})
+            return Response(
+                {"message": f"{spider_name} spider has parsed: {canonical_url}"}
+            )
             # return redirect("articles")  # you can get articles json after parsing
         except subprocess.CalledProcessError as e:
             return Response({"error": str(e)}, status=500)
@@ -250,7 +281,9 @@ class DictionaryView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        dictionary = Dictionary.objects.filter(user=request.user).order_by("-date_added")
+        dictionary = Dictionary.objects.filter(user=request.user).order_by(
+            "-date_added"
+        )
         serializer = DictionarySerializer(dictionary, many=True)
         return Response(serializer.data)
 
