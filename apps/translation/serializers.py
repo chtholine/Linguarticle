@@ -1,6 +1,6 @@
-from .models import *
 from rest_framework import serializers
-from django.contrib.auth.models import User
+
+from .models import *
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
     errors = serializers.SerializerMethodField()
 
     def get_errors(self, obj):
-        return self.errors if self.errors else {}
+        return self.errors or {}
 
     class Meta:
         model = User
