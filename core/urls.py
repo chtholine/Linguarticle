@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from apps.translation.views import ArticleView
-from .yasg import urlpatterns as doc_urls
-from .token_views import MyTokenObtainPairView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+from django.urls import include, path
+from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
+from apps.translation.views import ArticleView
+
+from .token_views import MyTokenObtainPairView
+from .yasg import urlpatterns as doc_urls
 
 urlpatterns = [
     path("", ArticleView.as_view(), name="article"),
