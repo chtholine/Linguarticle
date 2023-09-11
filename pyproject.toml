@@ -1,6 +1,15 @@
-[tool.black]
-line-length = 120
-target-version = ['py311']
-extend-exclude = '''
-venv
-'''
+[tool.ruff]
+line-length = 120  # defaults to 88 like black
+target-version = "py311"
+show-fixes = true
+
+select = [
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "UP",  # pyupgrade,
+  "I",   # isort
+]
+
+exclude = [
+    "venv"
+]
