@@ -320,10 +320,10 @@
     // remove buttons
     document.addEventListener("DOMContentLoaded", function () {
         const wordButtons = document.querySelectorAll(".word-rm");
-
         wordButtons.forEach(button => {
             button.addEventListener("click", function () {
                 const wordId = button.getAttribute("data-word-id");
+                const li = button.closest(`.li-word-button`)
 
                 // Fetch the article content using AJAX
                 fetch(`/api/v1/dictionary/${wordId}/`, {
@@ -338,7 +338,9 @@
                         if (response.status === 200) {
                             // Successful logout
                             console.log('Word removed successfully');
-                            // Redirect or update UI as needed
+                            $(li).fadeOut(300, function () {
+                                li.remove();
+                            });
                         } else {
                             // Handle logout failure, e.g., display an error message
                             console.error('Word removal failed');
@@ -350,13 +352,12 @@
                     });
             });
         });
-    });
 
-    document.addEventListener("DOMContentLoaded", function () {
         const articleButtons = document.querySelectorAll(".article-rm");
         articleButtons.forEach(button => {
             button.addEventListener("click", function () {
                 const articleId = button.getAttribute("data-article-id");
+                const li = button.closest(`.li-article-button`)
 
                 // Fetch the article content using AJAX
                 fetch(`/api/v1/articles/${articleId}/`, {
@@ -371,7 +372,9 @@
                         if (response.status === 200) {
                             // Successful logout
                             console.log('Article removed successfully');
-                            // Redirect or update UI as needed
+                            $(li).fadeOut(300, function () {
+                                li.remove();
+                            });
                         } else {
                             // Handle logout failure, e.g., display an error message
                             console.error('Article removal failed');
@@ -383,7 +386,7 @@
                     });
             });
         });
-    })
+    });
 
 
     // jQuery animation for nav
