@@ -224,7 +224,6 @@ class ArticlesView(APIView):
         )
         scraper_dir = os.path.join(base_dir, "scraper")
         os.environ["PYTHONPATH"] = scraper_dir
-        # os.environ["PYTHONPATH"] = "/home/chtholine/PycharmProjects/django_translation/scraper"
         # launch scrapy spider with subprocess
         spider_name = "article_spider"
         user_id = request.user.id
@@ -235,16 +234,6 @@ class ArticlesView(APIView):
             subprocess.run(
                 command.split(), check=True, cwd=scraper_dir
             )  # the response will not be returned until this method finishes scraping process
-            # article = Article.objects.get(url=canonical_url)
-            # content = article.data
-            # parts = [content[i : i + 4000] for i in range(0, len(content), 4000)]
-            # translated_parts = []
-            # for part in parts:
-            #     translated_part = GoogleTranslator(source="auto", target="uk").translate(part)
-            #     translated_parts.append(translated_part)
-            # translated_content = "".join(translated_parts)
-            # article.translation = translated_content
-            # article.save()
             return Response(
                 {"message": f"{spider_name} spider has parsed: {canonical_url}"}
             )
