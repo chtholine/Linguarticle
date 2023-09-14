@@ -55,11 +55,11 @@
                                 {% for article in articles reversed %}
                                     <li class="nav-item pb-3 li-article-button">
                                         <div style="display: flex; margin: 0; padding: 0"
-                                             class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
-                                            <button class="btn" style="width: 25em"
+                                             class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
+                                            <button class="article-button btn" style="width: 25em"
                                                     type="button"
                                                     data-article-id="{{ article.id }}">{{ article.title }}</button>
-                                            <button class="btn fa-solid fa-xmark article-rm" style="width: 50px;"></button>
+                                            <button class="btn fa-solid fa-xmark article-rm" data-article-id="{{ article.id }}" style="width: 50px;"></button>
                                         </div>
                                     </li>
                                 {% endfor %}
@@ -83,10 +83,10 @@
                         <hr class="saved-vocabulary">
                         <div class="scrollable-nav saved-vocabulary" id="word-list">
                             <ul class="nav nav-pills flex-column mb-auto">
-                                {% for word in words %}
+                                {% for word in words reversed %}
                                     <li class="nav-item pb-3 li-word-button">
                                         <div style="display: flex; margin: 0; padding: 0"
-                                             class="article-button btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
+                                             class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
                                             <button class="word-button btn" style="width: 25em"
                                                 type="button"
                                                 data-word-id="{{ word.id }}">{{ word }}</button>
