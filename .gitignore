@@ -6,6 +6,8 @@
 /scraper/logs/
 /scraper/dbs/
 /docker/certbot/
+/apps/translation/migrations/
+/scraper/scraper/spiders/article.json
 
 media/*
 !media/.gitkeep
@@ -79,4 +81,5 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-/scraper/scraper/spiders/article.json
+
+
