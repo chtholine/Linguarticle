@@ -317,11 +317,11 @@
         });
     });
 
+    // remove buttons
     document.addEventListener("DOMContentLoaded", function () {
-        const articleButtons = document.querySelectorAll(".word-rm");
+        const wordButtons = document.querySelectorAll(".word-rm");
 
-        // Add click event listener to each article button
-        articleButtons.forEach(button => {
+        wordButtons.forEach(button => {
             button.addEventListener("click", function () {
                 const wordId = button.getAttribute("data-word-id");
 
@@ -339,7 +339,6 @@
                             // Successful logout
                             console.log('Word removed successfully');
                             // Redirect or update UI as needed
-                            let li = document.querySelector(".word-button");
                         } else {
                             // Handle logout failure, e.g., display an error message
                             console.error('Word removal failed');
@@ -352,6 +351,39 @@
             });
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const articleButtons = document.querySelectorAll(".article-rm");
+        articleButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const articleId = button.getAttribute("data-article-id");
+
+                // Fetch the article content using AJAX
+                fetch(`/api/v1/articles/${articleId}/`, {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    mode: 'same-origin',
+                })
+                    .then(response => {
+                        if (response.status === 200) {
+                            // Successful logout
+                            console.log('Article removed successfully');
+                            // Redirect or update UI as needed
+                        } else {
+                            // Handle logout failure, e.g., display an error message
+                            console.error('Article removal failed');
+                        }
+                    })
+                    .catch(error => {
+                        // Handle network errors or other issues
+                        console.error('Error during article removal:', error);
+                    });
+            });
+        });
+    })
 
 
     // jQuery animation for nav
