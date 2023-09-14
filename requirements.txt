@@ -1,5 +1,5 @@
+ruff==0.0.289
 beautifulsoup4==4.12.2
-black==23.7.0
 Django==4.2.5
 djangorestframework==3.14.0
 djangorestframework_simplejwt==5.3.0
