@@ -6,18 +6,13 @@
                     aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div id="translationPopover" class="popover">
+            <div id="translationPopover" class="popover_selection">
                 <div class="original-text" id="originalText"></div>
                 <div class="translated-text" id="translatedText"></div>
                 <button id="addToDictionary">+</button>
             </div>
-
-
-            {#            <script>#}
-            {#                const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')#}
-            {#                const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))#}
-            {#            </script>#}
             <a class="navbar-brand" href="#">Linguarticle</a>
+
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                  aria-labelledby="offcanvasNavbarLabel" style="background: none">
                 <div class="offcanvas-body" style="display: flex;">
@@ -89,7 +84,9 @@
                                         <div style="display: flex; margin: 0; padding: 0"
                                              class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
                                             <button class="word-button btn" style="width: 25em"
-                                                    type="button"
+                                                    type="button" data-bs-toggle="popover"
+                                                    data-bs-trigger="focus"
+                                                    data-bs-title="{{ word }}" data-bs-content="{{ word.translation }}"
                                                     data-word-id="{{ word.id }}">{{ word }}</button>
                                             <button class="btn fa-solid fa-xmark word-rm" data-word-id="{{ word.id }}"
                                                     style="width: 50px;"></button>
@@ -126,5 +123,12 @@
             </div>
         </div>
     </nav>
+    <script>
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+        const popover = new bootstrap.Popover('.popover-dismiss', {
+            trigger: 'focus'
+        })
+    </script>
     <iframe class="flex-grow-1" id="article-iframe" srcdoc="{{ last_article.data }}" style="border: none;"></iframe>
 </main>
