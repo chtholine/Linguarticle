@@ -6,17 +6,17 @@
                     aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <button type="button" class="btn btn-secondary"
-                    data-bs-toggle="popover" data-bs-placement="right"
-                    data-bs-custom-class="custom-popover"
-                    data-bs-title="Satish Kumar sits in front of his submerged rice paddy in India’s Haryana state, looking despairingly at his ruined crops."
-                    data-bs-content="Сатіш Кумар сидить перед своїм затопленим рисовим полем в індійському штаті Хар’яна, з відчаєм дивлячись на свої знищені посіви.">
-                Custom popover
-            </button>
-            <script>
-                const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-                const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-            </script>
+            <div id="translationPopover" class="popover">
+                <div class="original-text" id="originalText"></div>
+                <div class="translated-text" id="translatedText"></div>
+                <button id="addToDictionary">+</button>
+            </div>
+
+
+            {#            <script>#}
+            {#                const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')#}
+            {#                const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))#}
+            {#            </script>#}
             <a class="navbar-brand" href="#">Linguarticle</a>
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                  aria-labelledby="offcanvasNavbarLabel" style="background: none">
@@ -59,7 +59,8 @@
                                             <button class="article-button btn" style="width: 25em"
                                                     type="button"
                                                     data-article-id="{{ article.id }}">{{ article.title }}</button>
-                                            <button class="btn fa-solid fa-xmark article-rm" data-article-id="{{ article.id }}" style="width: 50px;"></button>
+                                            <button class="btn fa-solid fa-xmark article-rm"
+                                                    data-article-id="{{ article.id }}" style="width: 50px;"></button>
                                         </div>
                                     </li>
                                 {% endfor %}
@@ -82,14 +83,14 @@
                         </ul>
                         <hr class="saved-vocabulary">
                         <div class="scrollable-nav saved-vocabulary" id="word-list">
-                            <ul class="nav nav-pills flex-column mb-auto">
+                            <ul class="nav nav-pills flex-column mb-auto" id="word-ul">
                                 {% for word in words reversed %}
                                     <li class="nav-item pb-3 li-word-button">
                                         <div style="display: flex; margin: 0; padding: 0"
                                              class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
                                             <button class="word-button btn" style="width: 25em"
-                                                type="button"
-                                                data-word-id="{{ word.id }}">{{ word }}</button>
+                                                    type="button"
+                                                    data-word-id="{{ word.id }}">{{ word }}</button>
                                             <button class="btn fa-solid fa-xmark word-rm" data-word-id="{{ word.id }}"
                                                     style="width: 50px;"></button>
                                         </div>
