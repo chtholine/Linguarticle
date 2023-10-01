@@ -293,7 +293,7 @@ h1 {
     opacity: 0.25;
 }
 
-.popover {
+.popover_selection {
   display: none;
   position: absolute;
   background-color: #fff;
@@ -308,4 +308,8 @@ h1 {
 
 .translated-text {
   margin-top: 5px;
+}
+
+.navbar {
+    --bs-navbar-brand-font-size: 1.5rem;
 }
