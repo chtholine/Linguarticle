@@ -292,3 +292,20 @@ h1 {
 .offcanvas-backdrop.show {
     opacity: 0.25;
 }
+
+.popover {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 99;
+}
+
+.original-text {
+  font-weight: bold;
+}
+
+.translated-text {
+  margin-top: 5px;
+}
