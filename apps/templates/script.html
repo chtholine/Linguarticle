@@ -104,41 +104,177 @@
 
         iframe.addEventListener("load", function () {
             const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
+            const translationPopover = document.getElementById("translationPopover");
+            const originalTextElement = document.getElementById("originalText");
+            const translatedTextElement = document.getElementById("translatedText");
+            const addToDictionaryButton = document.getElementById("addToDictionary");
+
+            // Variables to store the position of the selected text
+            let selectedTextRect = null;
 
             iframeContent.addEventListener("mouseup", function () {
                 const selectedText = iframeContent.getSelection().toString().trim();
 
                 if (selectedText !== "") {
+                    // Store the position of the selected text
+                    const selection = iframeContent.getSelection();
+                    const range = selection.getRangeAt(0);
+                    selectedTextRect = range.getBoundingClientRect();
+
                     // Send the selected text to the translation endpoint
                     translateSelectedText(selectedText);
+                } else {
+                    // Hide the popover if no text is selected
+                    translationPopover.style.display = "none";
+                    selectedTextRect = null;
                 }
             });
+
+            addToDictionaryButton.addEventListener("click", function () {
+                const originalText = originalTextElement.textContent.replace("English: ", "");
+                const translationText = translatedTextElement.textContent.replace("Ukrainian: ", "");
+
+                // Send the original word and translation to the dictionary endpoint
+                addToDictionary(originalText, translationText);
+            });
+
+            // Update the position of the popover when scrolling
+            window.addEventListener("scroll", function () {
+                if (selectedTextRect) {
+                    // Calculate the new position of the popover after scrolling
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const top = selectedTextRect.top + scrollTop - translationPopover.clientHeight - 10;
+
+                    // Set the new top position of the popover
+                    translationPopover.style.top = top + "px";
+
+                    // Calculate the new left position of the popover (centered horizontally)
+                    const left = selectedTextRect.left + selectedTextRect.width / 2 - translationPopover.clientWidth / 2;
+                    translationPopover.style.left = left + "px";
+                }
+            });
+
+            // Update the position of the popover when resizing the window
+            window.addEventListener("resize", function () {
+                if (selectedTextRect) {
+                    // Calculate the new position of the popover after resizing
+                    const top = selectedTextRect.top - translationPopover.clientHeight - 10;
+
+                    // Set the new top position of the popover
+                    translationPopover.style.top = top + "px";
+
+                    // Calculate the new left position of the popover (centered horizontally)
+                    const left = selectedTextRect.left + selectedTextRect.width / 2 - translationPopover.clientWidth / 2;
+                    translationPopover.style.left = left + "px";
+                }
+            });
+
+            function translateSelectedText(text) {
+                const translationData = {
+                    word: text
+                };
+
+                fetch('/api/v1/dictionary/translate/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    mode: 'same-origin',
+                    body: JSON.stringify(translationData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update the popover content with original and translated text
+                        originalTextElement.textContent = "English: " + text;
+                        translatedTextElement.textContent = "Ukrainian: " + data.translation;
+
+                        // Show the popover and set its position
+                        translationPopover.style.display = "block";
+
+                        // Calculate the initial top position of the popover
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        const top = selectedTextRect.top + scrollTop - translationPopover.clientHeight - 10;
+                        translationPopover.style.top = top + "px";
+
+                        // Calculate the initial left position of the popover (centered horizontally)
+                        const left = selectedTextRect.left + selectedTextRect.width / 2 - translationPopover.clientWidth / 2;
+                        translationPopover.style.left = left + "px";
+                    })
+                    .catch(error => {
+                        console.error('Error during translation:', error);
+                    });
+            }
+
+            // Function to add a word to the dictionary
+            function addToDictionary(originalText, translationText) {
+                const dictionaryData = {
+                    word: originalText,
+                    translation: translationText
+                };
+
+                fetch('/api/v1/dictionary/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    mode: 'same-origin',
+                    body: JSON.stringify(dictionaryData)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Word added to dictionary:', originalText, translationText);
+                            // After successfully adding the word, update the vocabulary list
+                            updateVocabularyList();
+                        } else {
+                            console.error('Error adding word to dictionary:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error adding word to dictionary:', error);
+                    });
+            }
+
+// Function to update the vocabulary list
+            function updateVocabularyList() {
+                fetch('/api/v1/dictionary/', { // Replace with your API endpoint to retrieve words
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'same-origin',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear the existing list
+                        const wordUl = document.getElementById('word-ul');
+                        wordUl.innerHTML = '';
+
+                        // Iterate through the data and append new list items
+                        data.forEach(word => {
+                            const listItem = document.createElement('li');
+                            listItem.className = 'nav-item pb-3 li-word-button';
+                            listItem.innerHTML = `
+          <div style="display: flex; margin: 0; padding: 0" class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
+            <button class="word-button btn" style="width: 25em" type="button" data-word-id="${word.id}">${word.word}</button>
+            <button class="btn fa-solid fa-xmark word-rm" data-word-id="${word.id}" style="width: 50px;"></button>
+          </div>
+        `;
+                            wordUl.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error updating vocabulary list:', error);
+                    });
+            }
+
+// Call updateVocabularyList() to initially populate the list
+            updateVocabularyList();
+
         });
 
-        function translateSelectedText(text) {
-            const translationData = {
-                word: text
-            };
 
-            fetch('/api/v1/dictionary/translate/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                mode: 'same-origin',
-                body: JSON.stringify(translationData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Log the original text and the translation
-                    console.log("Original Text:", text);
-                    console.log("Translation:", data.translation);
-                })
-                .catch(error => {
-                    console.error('Error during translation:', error);
-                });
-        }
     });
 
     // Function to handle the logout process
