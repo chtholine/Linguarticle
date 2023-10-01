@@ -238,6 +238,7 @@
 
 // Function to update the vocabulary list
             function updateVocabularyList() {
+
                 fetch('/api/v1/dictionary/', { // Replace with your API endpoint to retrieve words
                     method: 'GET',
                     headers: {
@@ -253,13 +254,17 @@
 
                         // Iterate through the data and append new list items
                         data.forEach(word => {
+                            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+                            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
                             const listItem = document.createElement('li');
                             listItem.className = 'nav-item pb-3 li-word-button';
                             listItem.innerHTML = `
-          <div style="display: flex; margin: 0; padding: 0" class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
-            <button class="word-button btn" style="width: 25em" type="button" data-word-id="${word.id}">${word.word}</button>
-            <button class="btn fa-solid fa-xmark word-rm" data-word-id="${word.id}" style="width: 50px;"></button>
-          </div>
+<div style="display: flex; margin: 0; padding: 0" class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
+    <button class="word-button btn" style="width: 25em" tabindex="0" type="button"
+    data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="${word.word}" data-bs-content="${word.translation}"
+    data-word-id="${word.id}">${word.word}</button>
+    <button class="btn fa-solid fa-xmark word-rm" data-word-id="${word.id}" style="width: 50px;"></button>
+</div>
         `;
                             wordUl.appendChild(listItem);
                         });
@@ -580,4 +585,5 @@
             return false;
         });
     });
+
 </script>
