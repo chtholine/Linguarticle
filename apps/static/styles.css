@@ -277,7 +277,7 @@ h1 {
 }
 
 .form-control {
- color: #6c757d
+    color: #6c757d
 }
 
 [data-bs-theme="dark"] {
@@ -294,20 +294,22 @@ h1 {
 }
 
 .popover_selection {
-  display: none;
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  z-index: 99;
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 99;
+    max-width: 25rem;
+    font-size: 1rem;
 }
 
 .original-text {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .translated-text {
-  margin-top: 5px;
+    margin-top: 5px;
 }
 
 .navbar {
