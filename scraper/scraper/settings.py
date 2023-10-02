@@ -3,12 +3,12 @@ import sys
 
 import django
 
-from core.settings import BASE_DIR
-
 base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(base_dir)
 os.environ["DJANGO_SETTINGS_MODULE"] = "core.settings"
 django.setup()
+
+from core.settings import BASE_DIR
 
 # Scrapy settings for scraper project
 #
