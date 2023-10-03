@@ -34,7 +34,10 @@
     <title>Linguarticle</title>
 </head>
 <body>
-{% include 'script.html' %}
+{% csrf_token %}
+<script>
+    {% include "script.js"%}
+</script>
 {% if not user.is_authenticated %}
     {% include 'auth.html' %}
 {% else %}
