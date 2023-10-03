@@ -295,7 +295,7 @@ h1 {
 
 .popover_selection {
     display: none;
-    position: absolute;
+    position: fixed;
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 10px;
