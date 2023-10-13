@@ -20,7 +20,7 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
 class DictionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Dictionary
-        fields = ["word", "translation"]
+        fields = ["id", "word", "translation"]
 
 
 class UserSerializer(serializers.ModelSerializer):
