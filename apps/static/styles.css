@@ -19,6 +19,7 @@ li {
 
 .btn {
     transition: color .20s ease-in-out, background-color .20s ease-in-out, border-color .20s ease-in-out, box-shadow .20s ease-in-out;
+    color: #212529;
 }
 
 .nav-pills .btn {
@@ -294,14 +295,17 @@ h1 {
 }
 
 .popover_selection {
-    display: none;
     position: fixed;
-    background-color: #fff;
+    background-color: #ffffff;
     border: 1px solid #ccc;
     padding: 10px;
     z-index: 99;
     max-width: 25rem;
     font-size: 1rem;
+    color: #333; /* Text color */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+    border-radius: 5px; /* Rounded corners */
+    display: none;
 }
 
 .original-text {
@@ -315,3 +319,10 @@ h1 {
 .navbar {
     --bs-navbar-brand-font-size: 1.5rem;
 }
+
+.navbar-brand {
+    color: #212529;
+}
+
+[data-bs-theme="dark"] {
+  --bs-body-color: #212529;}
