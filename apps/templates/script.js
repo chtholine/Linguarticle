@@ -439,40 +439,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // remove buttons
 document.addEventListener("DOMContentLoaded", function () {
-    const wordButtons = document.querySelectorAll(".word-rm");
-    wordButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            const wordId = button.getAttribute("data-word-id");
-            const li = button.closest(`.li-word-button`)
-
-            // Fetch the article content using AJAX
-            fetch(`/api/v1/dictionary/${wordId}/`, {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                mode: 'same-origin',
-            })
-                .then(response => {
-                    if (response.status === 200) {
-                        // Successful logout
-                        console.log('Word removed successfully');
-                        $(li).fadeOut(300, function () {
-                            li.remove();
-                        });
-                    } else {
-                        // Handle logout failure, e.g., display an error message
-                        console.error('Word removal failed');
-                    }
-                })
-                .catch(error => {
-                    // Handle network errors or other issues
-                    console.error('Error during word removal:', error);
-                });
-        });
-    });
-
     const articleButtons = document.querySelectorAll(".article-rm");
     articleButtons.forEach(button => {
         button.addEventListener("click", function () {
