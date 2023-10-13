@@ -27,12 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
                             console.log("Article URL sent successfully!");
-                            document.getElementById("article-url").value = '';
                             setTimeout(function () {
                                 document.getElementById("article-url").value = '';
                                 loaderLine.style.visibility = "hidden";
                                 location.reload();
                             }, 3000);
+
                         } else if (xhr.status === 201) {
                             console.log("Existing Article is successfully added!");
                             setTimeout(function () {
@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 loaderLine.style.visibility = "hidden";
                                 location.reload();
                             }, 1000);
+
                         } else {
                             console.error("Error sending article URL:", xhr.statusText);
                             document.getElementById("article-url").value = '';
@@ -120,36 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
             addToDictionary(originalText, translationText);
         });
 
-        // Update the position of the popover when scrolling
-        window.addEventListener("scroll", function () {
-            if (selectedTextRect) {
-                // Calculate the new position of the popover after scrolling
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const top = selectedTextRect.top + scrollTop - translationPopover.clientHeight - 10;
-
-                // Set the new top position of the popover
-                translationPopover.style.top = top + "px";
-
-                // Calculate the new left position of the popover (centered horizontally)
-                const left = selectedTextRect.left + selectedTextRect.width / 2 - translationPopover.clientWidth / 2;
-                translationPopover.style.left = left + "px";
-            }
-        });
-
-        // Update the position of the popover when resizing the window
-        window.addEventListener("resize", function () {
-            if (selectedTextRect) {
-                // Calculate the new position of the popover after resizing
-                const top = selectedTextRect.top - translationPopover.clientHeight - 10;
-
-                // Set the new top position of the popover
-                translationPopover.style.top = top + "px";
-
-                // Calculate the new left position of the popover (centered horizontally)
-                const left = selectedTextRect.left + selectedTextRect.width / 2 - translationPopover.clientWidth / 2;
-                translationPopover.style.left = left + "px";
-            }
-        });
 
         function translateSelectedText(text) {
             const translationData = {
@@ -236,8 +207,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Iterate through the data and append new list items
                     data.forEach(word => {
-                        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-                        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
                         const listItem = document.createElement('li');
                         listItem.className = 'nav-item pb-3 li-word-button';
                         listItem.innerHTML = `
@@ -250,6 +219,9 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
                         wordUl.appendChild(listItem);
                     });
+                    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+                    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
                 })
                 .catch(error => {
                     console.error('Error updating vocabulary list:', error);
