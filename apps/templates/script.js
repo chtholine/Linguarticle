@@ -191,8 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to update the vocabulary list
         function updateVocabularyList() {
-
-            fetch('/api/v1/dictionary/', { // Replace with your API endpoint to retrieve words
+            fetch('/api/v1/dictionary/', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -201,27 +200,53 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then(response => response.json())
                 .then(data => {
-                    // Clear the existing list
                     const wordUl = document.getElementById('word-ul');
                     wordUl.innerHTML = '';
 
-                    // Iterate through the data and append new list items
                     data.forEach(word => {
                         const listItem = document.createElement('li');
                         listItem.className = 'nav-item pb-3 li-word-button';
                         listItem.innerHTML = `
-<div style="display: flex; margin: 0; padding: 0" class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
-    <button class="word-button btn" style="width: 25em" tabindex="0" type="button"
-    data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="${word.word}" data-bs-content="${word.translation}"
-    data-word-id="${word.id}">${word.word}</button>
-    <button class="btn fa-solid fa-xmark word-rm" data-word-id="${word.id}" style="width: 50px;"></button>
-</div>
-        `;
+                <div style="display: flex; margin: 0; padding: 0" class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
+                    <button class="word-button btn" style="width: 25em" tabindex="0" type="button"
+                        data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="${word.word}" data-bs-content="${word.translation}"
+                        data-word-id="${word.id}">${word.word}</button>
+                    <button class="btn fa-solid fa-xmark word-rm" data-word-id="${word.id}" style="width: 50px;"></button>
+                </div>
+            `;
                         wordUl.appendChild(listItem);
+
+                        const rmButton = listItem.querySelector(".word-rm");
+                        rmButton.addEventListener("click", function () {
+                            const wordId = rmButton.getAttribute("data-word-id");
+                            const li = rmButton.closest(".li-word-button");
+
+                            fetch(`/api/v1/dictionary/${wordId}/`, {
+                                method: "DELETE",
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrftoken,
+                                },
+                                mode: 'same-origin',
+                            })
+                                .then(response => {
+                                    if (response.status === 200) {
+                                        console.log('Word removed successfully');
+                                        $(li).fadeOut(300, function () {
+                                            li.remove();
+                                        });
+                                    } else {
+                                        console.error('Word removal failed');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error during word removal:', error);
+                                });
+                        });
                     });
+
                     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
                     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-
                 })
                 .catch(error => {
                     console.error('Error updating vocabulary list:', error);
