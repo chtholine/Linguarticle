@@ -20,8 +20,8 @@
                          style="width: 280px; max-height: 100vh; background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);">
                         <div>
-                            <div class="nav row sticky-top"
-                                 style="display: flex; gap: 1em; margin-bottom: 1em; position: sticky">
+                            <div class="nav row sticky-top px-1"
+                                 style="display: flex; gap: 0.5em; margin-bottom: 1em; position: sticky">
                                 <button id="articles-btn" type="button" class="btn btn-outline-secondary col">Articles
                                 </button>
                                 <button id="vocabulary-btn" type="button" class="btn btn-outline-secondary col">
@@ -87,7 +87,7 @@
                                                     type="button" data-bs-toggle="popover"
                                                     data-bs-trigger="focus"
                                                     data-bs-title="{{ word }}" data-bs-content="{{ word.translation }}"
-                                                    data-word-id="{{ word.id }}">{{ word }}</button>
+                                                    data-word-id="{{ word.id }}">{{ word }} data-bs-placement="right" </button>
                                             <button class="btn fa-solid fa-xmark word-rm" data-word-id="{{ word.id }}"
                                                     style="width: 50px;"></button>
                                         </div>
@@ -103,7 +103,7 @@
                                 <a href="#"
                                    class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src=" https://preview.redd.it/ucezbnobnj271.png?width=568&format=png&auto=webp&s=07ac708a7b657dae6440b120dc6f9eef45cf62e0"
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
                                          alt="" class="rounded-circle me-2" width="40em" height="40em"
                                          style="background: aliceblue">
                                     <strong style="font-size: 1rem; color: #666666">{{ user }}</strong>
