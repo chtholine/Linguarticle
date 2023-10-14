@@ -50,8 +50,8 @@
                                 {% for article in articles reversed %}
                                     <li class="nav-item pb-3 li-article-button">
                                         <div style="display: flex; margin: 0; padding: 0"
-                                             class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
-                                            <button class="article-button btn" style="width: 25em"
+                                             class="btn btn-outline-secondary col-sm-4">
+                                            <button class="article-button btn text-truncate overflow-hidden" style="width: 25em"
                                                     type="button"
                                                     data-article-id="{{ article.id }}">{{ article.title }}</button>
                                             <button class="btn fa-solid fa-xmark article-rm"
@@ -82,8 +82,8 @@
                                 {% for word in words reversed %}
                                     <li class="nav-item pb-3 li-word-button">
                                         <div style="display: flex; margin: 0; padding: 0"
-                                             class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
-                                            <button class="word-button btn" style="width: 25em"
+                                             class="btn btn-outline-secondary col-sm-4">
+                                            <button class="word-button btn text-truncate overflow-hidden" style="width: 25em"
                                                     type="button" data-bs-toggle="popover"
                                                     data-bs-trigger="focus"
                                                     data-bs-title="{{ word }}" data-bs-content="{{ word.translation }}"
