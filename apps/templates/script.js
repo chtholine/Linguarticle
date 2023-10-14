@@ -207,8 +207,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         const listItem = document.createElement('li');
                         listItem.className = 'nav-item pb-3 li-word-button';
                         listItem.innerHTML = `
-                <div style="display: flex; margin: 0; padding: 0" class="btn btn-outline-secondary text-truncate overflow-hidden col-sm-4">
-                    <button class="word-button btn" style="width: 25em" tabindex="0" type="button"
+                <div style="display: flex; margin: 0; padding: 0" class="btn btn-outline-secondary col-sm-4">
+                    <button class="word-button btn text-truncate overflow-hidden" style="width: 25em" tabindex="0" type="button"
                         data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="${word.word}" data-bs-content="${word.translation}"
                         data-word-id="${word.id}">${word.word}</button>
                     <button class="btn fa-solid fa-xmark word-rm" data-word-id="${word.id}" style="width: 50px;"></button>
