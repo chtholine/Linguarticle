@@ -1,6 +1,5 @@
-ruff==0.0.289
 beautifulsoup4==4.12.2
-Django==4.2.5
+Django==4.2.6
 djangorestframework==3.14.0
 djangorestframework_simplejwt==5.3.0
 drf-yasg==1.21.7
@@ -9,16 +8,15 @@ pre-commit==3.4.0
 pyupgrade==3.10.1
 environ==1.0
 django-environ==0.11.2
-Pillow==10.0.0
 pip==23.2.1
-scrapy==2.10.1
+scrapy==2.11.0
 scrapy-djangoitem==1.1.1
 asyncpg==0.28.0
-psycopg2-binary==2.9.7
+psycopg2-binary==2.9.9
 asgiref==3.7.2
 itemadapter~=0.8.0
 nltk~=3.8.1
 requests==2.31.0
 deep_translator==1.11.4
 Twisted==22.10.0
-django-cors-headers==4.2.0
+django-cors-headers==4.3.0
