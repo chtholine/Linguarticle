@@ -1,9 +1,3 @@
-.PHONY: d-full-run
-# Make all actions needed for run from zero.
-d-full-run:
-	@make init-dev && \
-		make d-run
-
 .PHONY: d-run
 # Just run
 d-run:
@@ -28,13 +22,6 @@ d-purge:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		docker-compose \
 			down --volumes --remove-orphans --rmi local --timeout 0
-
-.PHONY: init-dev
-# Init environment for development
-init-dev:
-	@pip install --upgrade pip && \
-	pip install --requirement requirements.txt && \
-	pre-commit install
 
 .PHONY: pre-commit-run
 # Run tools for files from commit.
