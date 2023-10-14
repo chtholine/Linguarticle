@@ -456,13 +456,12 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then(response => {
                     if (response.status === 200) {
-                        // Successful logout
+                        // Successful article removal
                         console.log('Article removed successfully');
                         $(li).fadeOut(300, function () {
                             li.remove();
                         });
                     } else {
-                        // Handle logout failure, e.g., display an error message
                         console.error('Article removal failed');
                     }
                 })
