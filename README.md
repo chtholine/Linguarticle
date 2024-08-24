@@ -6,6 +6,7 @@ Select words to receive <a href="https://github.com/prataffel/deep_translator">t
 You can add words to your personal dictionary.</p>
 
 <h4>Preview</h4>
+<img src="https://i.imgur.com/QiJLvC8.png" width="800">
 <img src="https://i.imgur.com/icHwjxt.png" width="800">
 <h4>Commands</h4>
 Run: <code>make d-run</code><br/>
