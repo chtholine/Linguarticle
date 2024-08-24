@@ -330,6 +330,7 @@ function login() {
             } else {
                 // Handle login failure, e.g., display an error message
                 console.error('Login failed');
+                document.getElementById('login-error').style.visibility = 'visible';
             }
         })
         .catch(error => {

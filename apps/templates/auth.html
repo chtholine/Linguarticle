@@ -2,23 +2,24 @@
     <div id="modal" class="popupContainer">
         <section class="popupBody">
             <!-- Social Login -->
-            <div class="social_login">
-                <div>
-                    <a href="#" class="social_box google">
-                        <span class="icon"><i class="fa fa-google-plus"></i></span>
-                        <span class="icon_title">Connect with Google</span>
-                    </a>
-                </div>
-
-                <div class="centeredText">
-                    <span>Or use your Email address</span>
-                </div>
-
-                <div class="row">
-                    <div class="col"><a href="#" id="login_form" class="btn btn-outline-secondary">Login</a>
+            <div class="social_login pb-4 pt-2">
+            <div style="text-align: center; color: #212529">
+                <label style="font-size: 5ch;">
+                    Linguarticle
+                </label>
+                <br>
+                <label style="font-size: 2.6ch;">
+                    Your article translator!
+                </label>
+            </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-lg-8 pt-4"><a href="#" id="login_form" class="btn btn-outline-secondary">Login</a>
                     </div>
-                    <div class="col"><a href="#" id="register_form" class="btn btn-outline-secondary">Sign
-                        up</a></div>
+
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-lg-8 pt-3"><a href="#" id="register_form" class="btn btn-outline-secondary">Sign
+                        Up</a></div>
                 </div>
             </div>
 
@@ -42,6 +43,7 @@
                 </form>
 
                 <a href="#" class="forgot_password text-primary">Forgot password?</a>
+                <label id="login-error" class="text-danger" style="visibility: hidden">The username or password is incorrect.</label>
             </div>
 
             <!-- Register Form -->
@@ -63,7 +65,7 @@
                         <div class="col"><a href="#" class="btn register-back btn-outline-secondary"><i
                                 class="fa fa-angle-double-left"></i>
                             Back</a></div>
-                        <div class="col"><a href="#" class="btn btn-outline-primary">Register</a></div>
+                        <div class="col"><a href="#" class="btn btn-outline-primary">Sign Up</a></div>
                     </div>
                 </form>
             </div>

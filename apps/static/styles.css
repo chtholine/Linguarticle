@@ -81,7 +81,8 @@ h1 {
 }
 
 #auth {
-    background-image: url("https://cutewallpaper.org/21/background-gif-1920x1080/Pin-on-nim-gif.gif");
+    background-image: url("media/img.png");
+    background-size: cover;
     display: grid;
     place-content: center;
     min-height: 100vh;
@@ -325,3 +326,7 @@ h1 {
 
 [data-bs-theme="dark"] {
   --bs-body-color: #212529;}
+
+.scrollable-nav {
+    scrollbar-width: none;
+}
