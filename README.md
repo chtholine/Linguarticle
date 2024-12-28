@@ -12,9 +12,8 @@ Pick a saved article from your list to visualize its content.<br/>
 Select words to receive <a href="https://github.com/prataffel/deep_translator">translation</a> in Ukrainian.<br/>
 You can add words to your personal dictionary.</p>
 
+*Front-End files can be found in `apps/static` and `apps/templates`*
 ### Preview | [YouTube Video](https://youtu.be/BUAlJ0DojiU)
-
-
 
 <img src="https://i.imgur.com/QiJLvC8.png" width="800">
 <img src="https://i.imgur.com/icHwjxt.png" width="800">
